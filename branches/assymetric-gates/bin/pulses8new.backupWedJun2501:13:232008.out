@@ -1,0 +1,33 @@
+ -------------------------------------------------------- 
+         output file of synthesis: settings               
+ -------------------------------------------------------- 
+ Display level:                                           0
+ size of the population:                                  80
+ generation alteration cycle:                             1000
+ number of segments in each circuit:                      20
+ mutation probability is                                  0.15
+ mutation of crossover is                                 0.85
+ factor Alpha is                                          0.8
+ factor Beta is                                           0.1
+ factor Alpha1 is                                         1
+ factor Beta1 is                                          1
+ estimated minimum cost of this circuit                   10
+ phase used                                               0
+ Valuedness of designed logic                              2
+ measurement used                                         1
+ measured bits are                                        0 
+(1,0)(0,0)(1,0)(0,0)(1,0)(0,0)(0,0)(1,0)
+(0,0)(1,0)(0,0)(1,0)(0,0)(1,0)(1,0)(0,0)
+ -------------------------------------- 
+ type of GA 0 - normal, 1 - Darwinian                     0
+ type of mutation 0 - normal, 1 - bitwise                 0
+ type of crossover 0 - 1point, 1 - 2point                 0
+ type of replication 0 - RW, 1 - SUS                      1
+ type of fitness 0 - simplest, 3 - complex                1
+ type of fitness calculation 0 - individual, 1 - grouped  0
+ Pareto optimization 0 - no, 1 - yes                      0
+ Threshold replication 0 - no, other - threshold          0.6
+ The number of wires the final circuit has:               3
+ -------------------------------------------------------- 
+          output file of synthesis: input gates           
+ -------------------------------------------------------- 

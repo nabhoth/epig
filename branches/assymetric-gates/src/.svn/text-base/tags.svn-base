@@ -1,0 +1,400 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.6	//
+ACLOCAL	Makefile	/^ACLOCAL = ${SHELL} \/home\/nabhoth\/Projects\/epig_sq\/missing --run aclocal-1.9$/;"	m
+ACLOCAL_M4	Makefile	/^ACLOCAL_M4 = $(top_srcdir)\/aclocal.m4$/;"	m
+AMDEP_FALSE	Makefile	/^AMDEP_FALSE = #$/;"	m
+AMDEP_TRUE	Makefile	/^AMDEP_TRUE = $/;"	m
+AMTAR	Makefile	/^AMTAR = ${SHELL} \/home\/nabhoth\/Projects\/epig_sq\/missing --run tar$/;"	m
+AR	Makefile	/^AR = ar$/;"	m
+AUTOCONF	Makefile	/^AUTOCONF = ${SHELL} \/home\/nabhoth\/Projects\/epig_sq\/missing --run autoconf$/;"	m
+AUTOHEADER	Makefile	/^AUTOHEADER = ${SHELL} \/home\/nabhoth\/Projects\/epig_sq\/missing --run autoheader$/;"	m
+AUTOMAKE	Makefile	/^AUTOMAKE = ${SHELL} \/home\/nabhoth\/Projects\/epig_sq\/missing --run automake-1.9$/;"	m
+AWK	Makefile	/^AWK = gawk$/;"	m
+CC	Makefile	/^CC = gcc$/;"	m
+CCDEPMODE	Makefile	/^CCDEPMODE = depmode=gcc3$/;"	m
+CFLAGS	Makefile	/^CFLAGS = -g -O2$/;"	m
+CONFIG_CLEAN_FILES	Makefile	/^CONFIG_CLEAN_FILES =$/;"	m
+CONFIG_HEADER	Makefile	/^CONFIG_HEADER = $(top_builddir)\/config.h$/;"	m
+CPP	Makefile	/^CPP = gcc -E$/;"	m
+CPPFLAGS	Makefile	/^CPPFLAGS = $/;"	m
+CTAGS	Makefile	/^CTAGS = ctags$/;"	m
+CXX	Makefile	/^CXX = g++$/;"	m
+CXXCOMPILE	Makefile	/^CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \\$/;"	m
+CXXCPP	Makefile	/^CXXCPP = g++ -E$/;"	m
+CXXDEPMODE	Makefile	/^CXXDEPMODE = depmode=gcc3$/;"	m
+CXXFLAGS	Makefile	/^CXXFLAGS = -g -O2$/;"	m
+CXXLD	Makefile	/^CXXLD = $(CXX)$/;"	m
+CXXLINK	Makefile	/^CXXLINK = $(LIBTOOL) --tag=CXX --mode=link $(CXXLD) $(AM_CXXFLAGS) \\$/;"	m
+CYGPATH_W	Makefile	/^CYGPATH_W = echo$/;"	m
+Cost	EpiG.h	/^	float Cost;		\/\/ Cost of the circuit$/;"	m	struct:Individual
+Cost	EpiG.h	/^	int Cost;		\/\/ cost of the gate$/;"	m	struct:qGate
+Counter	EpiG.h	/^	int Counter;		\/\/ counter of all representation so far found$/;"	m	struct:Crc
+Crc	EpiG.h	/^struct Crc$/;"	s
+DEFAULT_INCLUDES	Makefile	/^DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)$/;"	m
+DEFS	Makefile	/^DEFS = -DHAVE_CONFIG_H$/;"	m
+DEPDIR	Makefile	/^DEPDIR = .deps$/;"	m
+DISTFILES	Makefile	/^DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)$/;"	m
+DIST_COMMON	Makefile	/^DIST_COMMON = $(srcdir)\/Makefile.am $(srcdir)\/Makefile.in$/;"	m
+DIST_SOURCES	Makefile	/^DIST_SOURCES = $(epig_SOURCES)$/;"	m
+ECHO	Makefile	/^ECHO = echo$/;"	m
+ECHO_C	Makefile	/^ECHO_C = $/;"	m
+ECHO_N	Makefile	/^ECHO_N = -n$/;"	m
+ECHO_T	Makefile	/^ECHO_T = $/;"	m
+EGREP	Makefile	/^EGREP = \/usr\/bin\/grep -E$/;"	m
+ETAGS	Makefile	/^ETAGS = etags$/;"	m
+EXEEXT	Makefile	/^EXEEXT = $/;"	m
+Error	EpiG.h	/^	float Error;		\/\/ Error of the circuit$/;"	m	struct:Individual
+F77	Makefile	/^F77 = g77$/;"	m
+FFLAGS	Makefile	/^FFLAGS = -g -O2$/;"	m
+GA	EpiG.h	/^	  GA ()$/;"	f	class:GA
+GA	EpiG.h	/^class GA$/;"	c
+GREP	Makefile	/^GREP = \/usr\/bin\/grep$/;"	m
+GROUPSIZE	EpiG.h	/^const int GROUPSIZE = 15;	\/\/size of the group for group fitnes evaluation$/;"	v
+Ga	EpiG.h	/^	int Ga;$/;"	m	class:GA
+Groups	EpiG.h	/^	int Groups;		\/\/ for share fitness calcualtion$/;"	m	struct:Individual
+INCLUDES	Makefile	/^INCLUDES = $(all_includes)$/;"	m
+INDV	EpiG.h	/^	qGate *INDV;$/;"	m	class:QE
+INSTALL	Makefile	/^INSTALL = \/usr\/bin\/ginstall -c$/;"	m
+INSTALL_DATA	Makefile	/^INSTALL_DATA = ${INSTALL} -m 644$/;"	m
+INSTALL_HEADER	Makefile	/^INSTALL_HEADER = $(INSTALL_DATA)$/;"	m
+INSTALL_PROGRAM	Makefile	/^INSTALL_PROGRAM = ${INSTALL}$/;"	m
+INSTALL_SCRIPT	Makefile	/^INSTALL_SCRIPT = ${INSTALL}$/;"	m
+INSTALL_STRIP_PROGRAM	Makefile	/^INSTALL_STRIP_PROGRAM = ${SHELL} $(install_sh) -c -s$/;"	m
+Individual	EpiG.h	/^struct Individual$/;"	s
+LDFLAGS	Makefile	/^LDFLAGS = $/;"	m
+LIBOBJS	Makefile	/^LIBOBJS = $/;"	m
+LIBS	Makefile	/^LIBS = $/;"	m
+LIBTOOL	Makefile	/^LIBTOOL = $(SHELL) $(top_builddir)\/libtool$/;"	m
+LN_S	Makefile	/^LN_S = ln -s$/;"	m
+LTCXXCOMPILE	Makefile	/^LTCXXCOMPILE = $(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) \\$/;"	m
+LTLIBOBJS	Makefile	/^LTLIBOBJS = $/;"	m
+MAKEINFO	Makefile	/^MAKEINFO = ${SHELL} \/home\/nabhoth\/Projects\/epig_sq\/missing --run makeinfo$/;"	m
+MAXGATEDEM	EpiG.h	/^const int MAXGATEDEM = 64;	\/\/ 2 to the n        er, here set n = 5, so 2^5 = 32. also max number of individual matirx size$/;"	v
+MAXGATEINPUT	EpiG.h	/^const int MAXGATEINPUT = 6;	\/\/ max number of input for any single gate$/;"	v
+MAXGEN	EpiG.h	/^const int MAXGEN = 1000000;	\/\/ max number generations allowed$/;"	v
+MAXINDVWIRENUM	EpiG.h	/^const int MAXINDVWIRENUM = 6;	\/\/ max number of wires for input of an individual is MAXINDIWIRENUM$/;"	v
+MAXMEASUREGATE	EpiG.h	/^const int MAXMEASUREGATE = 12;	\/\/ max number of measurement gates$/;"	v
+MAXNUMBER	EpiG.h	/^const int MAXNUMBER = 500;	\/\/ max number of individuals$/;"	v
+MAXNUMOFGATES	EpiG.h	/^const int MAXNUMOFGATES = 500;	\/\/ max number of gates used$/;"	v
+MAXSEGNUM	EpiG.h	/^const int MAXSEGNUM = 200;	\/\/ max number of segments per individual is MAXSEGNUM$/;"	v
+MAXSTRING	EpiG.h	/^const int MAXSTRING = 150;	\/\/ max number of chars in an individual string$/;"	v
+MINCIRCUITSIZE	EpiG.h	/^const int MINCIRCUITSIZE = 2;	\/\/ we are not looking for a single gate solution (before minimization)$/;"	v
+Matrix	Qe.cc	/^void QE::Matrix(bool display)$/;"	f	class:QE
+NORMAL_INSTALL	Makefile	/^NORMAL_INSTALL = :$/;"	m
+NORMAL_UNINSTALL	Makefile	/^NORMAL_UNINSTALL = :$/;"	m
+OBJEXT	Makefile	/^OBJEXT = o$/;"	m
+PACKAGE	Makefile	/^PACKAGE = epig$/;"	m
+PACKAGE_BUGREPORT	Makefile	/^PACKAGE_BUGREPORT = $/;"	m
+PACKAGE_NAME	Makefile	/^PACKAGE_NAME = $/;"	m
+PACKAGE_STRING	Makefile	/^PACKAGE_STRING = $/;"	m
+PACKAGE_TARNAME	Makefile	/^PACKAGE_TARNAME = $/;"	m
+PACKAGE_VERSION	Makefile	/^PACKAGE_VERSION = $/;"	m
+PATH_SEPARATOR	Makefile	/^PATH_SEPARATOR = :$/;"	m
+POST_INSTALL	Makefile	/^POST_INSTALL = :$/;"	m
+POST_UNINSTALL	Makefile	/^POST_UNINSTALL = :$/;"	m
+PRE_INSTALL	Makefile	/^PRE_INSTALL = :$/;"	m
+PRE_UNINSTALL	Makefile	/^PRE_UNINSTALL = :$/;"	m
+PROGRAMS	Makefile	/^PROGRAMS = $(bin_PROGRAMS)$/;"	m
+QE	EpiG.h	/^	QE ()$/;"	f	class:QE
+QE	EpiG.h	/^class QE$/;"	c
+RANLIB	Makefile	/^RANLIB = ranlib$/;"	m
+Rank	EpiG.h	/^	int Rank;$/;"	m	struct:Individual
+SET_MAKE	Makefile	/^SET_MAKE = $/;"	m
+SHELL	Makefile	/^SHELL = \/bin\/sh$/;"	m
+SOURCES	Makefile	/^SOURCES = $(epig_SOURCES)$/;"	m
+STRIP	Makefile	/^STRIP = strip$/;"	m
+Segments	EpiG.h	/^	int Segments;$/;"	m	class:QE
+Solution	EpiG.h	/^struct Solution$/;"	s
+SolutionCount	EpiG.h	/^	int SolutionCount;$/;"	m	class:QE
+V	EpiG.h	/^	int V;$/;"	m	struct:d_list
+VERSION	Makefile	/^VERSION = 0.1$/;"	m
+ac_ct_CC	Makefile	/^ac_ct_CC = gcc$/;"	m
+ac_ct_CXX	Makefile	/^ac_ct_CXX = g++$/;"	m
+ac_ct_F77	Makefile	/^ac_ct_F77 = g77$/;"	m
+addGateSet	Qe.cc	/^void QE::addGateSet(qGate *array[]){$/;"	f	class:QE
+alpha	EpiG.h	/^	float alpha;$/;"	m	class:GA
+alpha1	EpiG.h	/^	float alpha1;$/;"	m	class:GA
+alterations	EpiG.h	/^	int alterations;	\/\/how many generations does the GA have to do before call a module$/;"	m	class:GA
+am__aclocal_m4_deps	Makefile	/^am__aclocal_m4_deps = $(top_srcdir)\/configure.in$/;"	m
+am__cd	Makefile	/^am__cd = CDPATH="$${ZSH_VERSION+.}$(PATH_SEPARATOR)" && cd$/;"	m
+am__configure_deps	Makefile	/^am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \\$/;"	m
+am__depfiles_maybe	Makefile	/^am__depfiles_maybe = depfiles$/;"	m
+am__fastdepCC_FALSE	Makefile	/^am__fastdepCC_FALSE = #$/;"	m
+am__fastdepCC_TRUE	Makefile	/^am__fastdepCC_TRUE = $/;"	m
+am__fastdepCXX_FALSE	Makefile	/^am__fastdepCXX_FALSE = #$/;"	m
+am__fastdepCXX_TRUE	Makefile	/^am__fastdepCXX_TRUE = $/;"	m
+am__include	Makefile	/^am__include = include$/;"	m
+am__installdirs	Makefile	/^am__installdirs = "$(DESTDIR)$(bindir)"$/;"	m
+am__leading_dot	Makefile	/^am__leading_dot = .$/;"	m
+am__quote	Makefile	/^am__quote = $/;"	m
+am__tar	Makefile	/^am__tar = ${AMTAR} chof - "$$tardir"$/;"	m
+am__untar	Makefile	/^am__untar = ${AMTAR} xf -$/;"	m
+am_epig_OBJECTS	Makefile	/^am_epig_OBJECTS = tools.$(OBJEXT) main.$(OBJEXT) cstGA.$(OBJEXT) \\$/;"	m
+apply1Crossover	cstGA.cc	/^void GA::apply1Crossover(int ind1, int ind2)$/;"	f	class:GA
+apply2Crossover	cstGA.cc	/^void GA::apply2Crossover(int ind1, int ind2)$/;"	f	class:GA
+applyIMutation	cstGA.cc	/^void GA::applyIMutation(int indv, bool repair)$/;"	f	class:GA
+applyMutation	cstGA.cc	/^void  GA::applyMutation(int indv, bool repair)$/;"	f	class:GA
+applyParetoReplication	cstGA.cc	/^void GA::applyParetoReplication()$/;"	f	class:GA
+applyRMutation	cstGA.cc	/^void GA::applyRMutation(int indv, bool repair)$/;"	f	class:GA
+applyReplication	cstGA.cc	/^void GA::applyReplication()$/;"	f	class:GA
+assignVal	Qe.cc	/^complex <double> QE::assignVal(double x)$/;"	f	class:QE
+avCost	EpiG.h	/^	double avCost[100000];$/;"	m	struct:result
+avError	EpiG.h	/^	double avError[100000];$/;"	m	struct:result
+avFitness	EpiG.h	/^	double avFitness [100000];$/;"	m	struct:result
+avrghst	EpiG.h	/^	int avrghst[1000];$/;"	m	class:GA
+best	EpiG.h	/^	float best;$/;"	m	class:GA
+bestData	EpiG.h	/^	qDataGate bestData;$/;"	m	class:GA
+bestIndv	EpiG.h	/^	Individual *bestIndv;	\/\/ best Individual from the run$/;"	m	class:GA
+bestOne	EpiG.h	/^	qGate bestOne;$/;"	m	class:QE
+besthst	EpiG.h	/^	int besthst[1000];$/;"	m	class:GA
+bestlocal	EpiG.h	/^	Solution bestlocal;$/;"	m	class:QE
+beta	EpiG.h	/^	float beta;$/;"	m	class:GA
+beta1	EpiG.h	/^	float beta1;$/;"	m	class:GA
+binPROGRAMS_INSTALL	Makefile	/^binPROGRAMS_INSTALL = $(INSTALL_PROGRAM)$/;"	m
+bin_PROGRAMS	Makefile	/^bin_PROGRAMS = epig$(EXEEXT)$/;"	m
+bindir	Makefile	/^bindir = ${exec_prefix}\/bin$/;"	m
+build	Makefile	/^build = i686-pc-linux-gnu$/;"	m
+build_alias	Makefile	/^build_alias = $/;"	m
+build_cpu	Makefile	/^build_cpu = i686$/;"	m
+build_os	Makefile	/^build_os = linux-gnu$/;"	m
+build_triplet	Makefile	/^build_triplet = i686-pc-linux-gnu$/;"	m
+build_vendor	Makefile	/^build_vendor = pc$/;"	m
+cGate	tools.cc	/^qGate* cGate(qGate *Circ)$/;"	f
+calcAverage	cstGA.cc	/^void GA::calcAverage(){$/;"	f	class:GA
+ccGate	tools.cc	/^qGate* ccGate(qGate *Circ, qGate *Dest)$/;"	f
+closeStream	Qe.cc	/^void QE::closeStream()$/;"	f	class:QE
+closeStream	cstGA.cc	/^void GA::closeStream()$/;"	f	class:GA
+compareGate	Qe.cc	/^bool QE::compareGate(qGate *A)$/;"	f	class:QE
+compareGate	tools.cc	/^bool compareGate(qGate A, qGate B)$/;"	f
+compareIndividual	Qe.cc	/^bool QE::compareIndividual(qGate *A)$/;"	f	class:QE
+computeMatrix	cstGA.cc	/^qGate* GA::computeMatrix(Individual *indi)$/;"	f	class:GA
+condition	EpiG.h	/^	bool condition;		\/\/ some boolean condition$/;"	m	class:GA
+convert_stream	EpiG.h	/^	 ostringstream convert_stream;$/;"	m	class:GA
+copyGate	tools.cc	/^qGate copyGate(qGate *Circ)$/;"	f
+cost	EpiG.h	/^	float cost;$/;"	m	struct:Solution
+counter	EpiG.h	/^	int counter;$/;"	m	struct:result
+crossover	EpiG.h	/^	int crossover;$/;"	m	class:GA
+currentpos	EpiG.h	/^	int currentpos;$/;"	m	struct:qState
+currentstate	EpiG.h	/^	string currentstate;$/;"	m	struct:qState
+d_list	EpiG.h	/^struct d_list$/;"	s
+dataINDV	EpiG.h	/^	qDataGate *dataINDV;$/;"	m	class:QE
+datadir	Makefile	/^datadir = ${datarootdir}$/;"	m
+datarootdir	Makefile	/^datarootdir = ${prefix}\/share$/;"	m
+densityErrorMatrix	EpiG.h	/^	  complex < double >densityErrorMatrix[MAXGATEDEM][MAXGATEDEM];	\/\/ matrix representing this gate$/;"	m	struct:qDataGate
+densityErrorMatrix	Qe.cc	/^qGate* QE::densityErrorMatrix(qGate *A, qGate *B){$/;"	f	class:QE
+densityErrorMatrix	tools.cc	/^void densityErrorMatrix(qGate *A, qGate *B){$/;"	f
+depcomp	Makefile	/^depcomp = $(SHELL) $(top_srcdir)\/depcomp$/;"	m
+display	EpiG.h	/^	bool display;$/;"	m	class:GA
+displaylevel	EpiG.h	/^	int displaylevel;$/;"	m	class:GA
+divider	EpiG.h	/^	int divider;$/;"	m	class:GA
+doFitness	cstGA.cc	/^void* GA::doFitness()$/;"	f	class:GA
+doMatrixFitness	cstGA.cc	/^void* GA::doMatrixFitness(Individual *ind, bool display)$/;"	f	class:GA
+doMeasureFitness	cstGA.cc	/^void* GA::doMeasureFitness(Individual *ind, bool display)$/;"	f	class:GA
+docdir	Makefile	/^docdir = ${datarootdir}\/doc\/${PACKAGE}$/;"	m
+dvidir	Makefile	/^dvidir = ${docdir}$/;"	m
+end	EpiG.h	/^	char end;$/;"	m	class:QE
+epig_LDADD	Makefile	/^epig_LDADD = $(LDADD)$/;"	m
+epig_LDFLAGS	Makefile	/^epig_LDFLAGS = -lpthread -L.\/ $(all_libraries)$/;"	m
+epig_OBJECTS	Makefile	/^epig_OBJECTS = $(am_epig_OBJECTS)$/;"	m
+epig_SOURCES	Makefile	/^epig_SOURCES = tools.cc main.cc cstGA.cc Qe.cc $/;"	m
+error	EpiG.h	/^	double error;$/;"	m	class:QE
+error	EpiG.h	/^	float error;$/;"	m	struct:Solution
+evaluatePopulation	cstGA.cc	/^void GA::evaluatePopulation()$/;"	f	class:GA
+exec_prefix	Makefile	/^exec_prefix = ${prefix}$/;"	m
+finalGate	EpiG.h	/^	qGate *finalGate;	\/\/ gate\/circuit we are looking for$/;"	m	class:GA
+finalResult	EpiG.h	/^	result finalResult;$/;"	m	class:GA
+findGate	cstGA.cc	/^int GA::findGate(qGate *A)$/;"	f	class:GA
+fitness	EpiG.h	/^	float fitness;		\/\/ fitness value$/;"	m	struct:Individual
+fitness	EpiG.h	/^	float fitness;$/;"	m	struct:Solution
+fitness	EpiG.h	/^	int fitness;$/;"	m	class:GA
+gateArray	EpiG.h	/^	qGate *gateArray[MAXNUMOFGATES];	\/\/ all agtes are stored in here$/;"	m	class:GA
+gateArray	EpiG.h	/^	qGate *gateArray[MAXNUMOFGATES];	\/\/ all agtes are stored in here$/;"	m	struct:Individual
+gateArray	EpiG.h	/^	qGate *gateArray[MAXNUMOFGATES];$/;"	m	class:QE
+gateCounter	EpiG.h	/^	int gateCounter[MAXSEGNUM];$/;"	m	class:QE
+gateMatrix1	EpiG.h	/^	  complex < double >gateMatrix1[MAXGATEDEM][MAXGATEDEM];	\/\/ matrix representing this circuit$/;"	m	struct:Crc
+gateMatrix1	EpiG.h	/^	  complex < double >gateMatrix1[MAXGATEDEM][MAXGATEDEM];	\/\/ matrix representing this gate$/;"	m	struct:qGate
+genPerms	Qe.cc	/^group* QE::genPerms(group *head, bool perm)$/;"	f	class:QE
+generateExtendMatrix	cstGA.cc	/^void GA::generateExtendMatrix(char chcounter)$/;"	f	class:GA
+generateMeasureOps	cstGA.cc	/^void* GA::generateMeasureOps()$/;"	f	class:GA
+generatePhase	tools.cc	/^complex <double> generatePhase()$/;"	f
+generatePhases	tools.cc	/^void generatePhases(Individual *I)$/;"	f
+generationCondition	EpiG.h	/^	int generationCondition;	\/\/ termination criterian$/;"	m	class:GA
+generationCondition	EpiG.h	/^	int generationCondition;$/;"	m	class:QE
+getConjugate	tools.cc	/^complex<double> getConjugate(complex<double> value){$/;"	f
+getFitness	cstGA.cc	/^bool GA::getFitness()$/;"	f	class:GA
+getGate	Qe.cc	/^int QE::getGate(char b)$/;"	f	class:QE
+getGate	cstGA.cc	/^int  GA::getGate(char b)$/;"	f	class:GA
+getGatesfromString	tools.cc	/^int getGatesfromString(string indv)$/;"	f
+getPermutativeCircuits	cstGA.cc	/^qGate** GA::getPermutativeCircuits()$/;"	f	class:GA
+getPermutativeSegments	cstGA.cc	/^qGate** GA::getPermutativeSegments()$/;"	f	class:GA
+getqGate	cstGA.cc	/^int  GA::getqGate(string b)$/;"	f	class:GA
+group	EpiG.h	/^typedef struct d_list group;$/;"	t	typeref:struct:d_list
+grouped	EpiG.h	/^	bool grouped;$/;"	m	class:GA
+host	Makefile	/^host = i686-pc-linux-gnu$/;"	m
+host_alias	Makefile	/^host_alias = $/;"	m
+host_cpu	Makefile	/^host_cpu = i686$/;"	m
+host_os	Makefile	/^host_os = linux-gnu$/;"	m
+host_triplet	Makefile	/^host_triplet = i686-pc-linux-gnu$/;"	m
+host_vendor	Makefile	/^host_vendor = pc$/;"	m
+htmldir	Makefile	/^htmldir = ${docdir}$/;"	m
+in_stream	EpiG.h	/^	ifstream in_stream;	\/\/ input file stream$/;"	m	class:GA
+in_stream	EpiG.h	/^	ifstream in_stream;$/;"	m	class:QE
+includedir	Makefile	/^includedir = ${prefix}\/include$/;"	m
+infodir	Makefile	/^infodir = ${datarootdir}\/info$/;"	m
+initMatrix	tools.cc	/^void initMatrix(qGate *A, int resultnum)$/;"	f
+initializeGates	cstGA.cc	/^void GA::initializeGates()$/;"	f	class:GA
+initializePop	cstGA.cc	/^void GA::initializePop(int level, string filename)$/;"	f	class:GA
+initpos	EpiG.h	/^	int initpos;$/;"	m	struct:qState
+initstate	EpiG.h	/^	string initstate;$/;"	m	struct:qState
+injectNormalCircuits	cstGA.cc	/^void GA::injectNormalCircuits(string **refs)$/;"	f	class:GA
+injectNormalSegments	cstGA.cc	/^void GA::injectNormalSegments(string **refs)$/;"	f	class:GA
+insertA	Qe.cc	/^void QE::insertA(group* A, group* m_List)$/;"	f	class:QE
+insertB	Qe.cc	/^group* QE::insertB(group* A, group* m_List)$/;"	f	class:QE
+install_sh	Makefile	/^install_sh = \/home\/nabhoth\/Projects\/epig_sq\/install-sh$/;"	m
+install_sh_DATA	Makefile	/^install_sh_DATA = $(install_sh) -c -m 644$/;"	m
+install_sh_PROGRAM	Makefile	/^install_sh_PROGRAM = $(install_sh) -c$/;"	m
+install_sh_SCRIPT	Makefile	/^install_sh_SCRIPT = $(install_sh) -c$/;"	m
+ioNumber	EpiG.h	/^	int ioNumber;		\/\/ number of input\/output wires$/;"	m	struct:Crc
+ioNumber	EpiG.h	/^	int ioNumber;		\/\/ number of wires of this individual$/;"	m	struct:Individual
+ioNumber	EpiG.h	/^	int ioNumber;$/;"	m	struct:Solution
+kronProduct	tools.cc	/^qGate* kronProduct(qGate *A, qGate *B)$/;"	f
+libdir	Makefile	/^libdir = ${exec_prefix}\/lib$/;"	m
+libexecdir	Makefile	/^libexecdir = ${exec_prefix}\/libexec$/;"	m
+localedir	Makefile	/^localedir = ${datarootdir}\/locale$/;"	m
+localstatedir	Makefile	/^localstatedir = ${prefix}\/var$/;"	m
+main	main.cc	/^int main(int argc, char *argv[])$/;"	f
+makeFitness	cstGA.cc	/^void GA::makeFitness(Individual *indi, bool display)$/;"	f	class:GA
+makeIndvString	cstGA.cc	/^void GA::makeIndvString(Individual *I)$/;"	f	class:GA
+makeMeasureFitness	cstGA.cc	/^void GA::makeMeasureFitness(Individual *indi, bool display)$/;"	f	class:GA
+mandir	Makefile	/^mandir = ${datarootdir}\/man$/;"	m
+matrixProduct	Qe.cc	/^qGate* QE::matrixProduct(qGate *A, qGate *B)$/;"	f	class:QE
+matrixProduct	tools.cc	/^qGate matrixProduct(qGate *A, qGate *B)$/;"	f
+matrixProduct2	Qe.cc	/^void QE::matrixProduct2(qGate *R, qGate *A, qGate *B)$/;"	f	class:QE
+measureexpected	EpiG.h	/^	complex<double> measureexpected[MAXGATEINPUT*2][MAXGATEDEM]; \/\/two fields per input by Max size of the input-output mapping$/;"	m	class:GA
+measurement	EpiG.h	/^	static int measurement;	\/\/measurement switch 0 - turns of measurement, >0 number of measured qubits so as the order of measurement$/;"	m	class:GA
+measurement	cstGA.cc	/^int GA::measurement;$/;"	m	class:GA	file:
+measurementQBits	EpiG.h	/^	int measurementQBits[MAXGATEINPUT];$/;"	m	class:GA
+measurementQBits	EpiG.h	/^	int measurementQBits[MAXGATEINPUT];$/;"	m	struct:qFunction
+measurements	EpiG.h	/^	qGate *measurements[MAXMEASUREGATE];	\/\/the set of meaurement operators defined by parameters from file$/;"	m	class:GA
+mergeSegs	cstGA.cc	/^void GA::mergeSegs(Individual *Circ, int first, int second)$/;"	f	class:GA
+mincircuitsize	EpiG.h	/^	int mincircuitsize; $/;"	m	class:GA
+minimizeCirc	cstGA.cc	/^int GA::minimizeCirc(Individual *qC)$/;"	f	class:GA
+mkdir_p	Makefile	/^mkdir_p = mkdir -p --$/;"	m
+mkinstalldirs	Makefile	/^mkinstalldirs = $(SHELL) $(top_srcdir)\/mkinstalldirs$/;"	m
+moveL	Qe.cc	/^group* QE::moveL(group* m_List)$/;"	f	class:QE
+mtx	cstGA.cc	/^pthread_mutex_t mtx = PTHREAD_MUTEX_INITIALIZER;$/;"	v
+mutation	EpiG.h	/^	int mutation;$/;"	m	class:GA
+my_string	EpiG.h	/^	string my_string;	\/\/ circuit representation as string$/;"	m	struct:Individual
+my_string	EpiG.h	/^	string my_string;	\/\/The String Name of this gate$/;"	m	struct:qGate
+my_string	EpiG.h	/^	string my_string;	\/\/The String Name of this gate$/;"	m	struct:stringqGate
+my_string	EpiG.h	/^	string my_string;$/;"	m	struct:Solution
+my_string	EpiG.h	/^	string my_string;$/;"	m	struct:qDataGate
+nameArray	EpiG.h	/^	string nameArray[MAXNUMOFGATES];$/;"	m	class:QE
+nameGate	EpiG.h	/^	char nameGate[MAXNUMOFGATES];	\/\/ for a particular number of input and output, the list of the gates can be used$/;"	m	struct:tempT
+nameT	EpiG.h	/^struct nameT$/;"	s
+new_population	EpiG.h	/^	Individual *new_population[MAXNUMBER];	\/\/ population of individuals used for replication ... non optimal to be improved$/;"	m	class:GA
+next	EpiG.h	/^	struct d_list *next;$/;"	m	struct:d_list	typeref:struct:d_list::d_list
+nonorm	EpiG.h	/^	string nonorm;$/;"	m	struct:nameT
+normNames	EpiG.h	/^	nameT *normNames[MAXNUMOFGATES];$/;"	m	class:GA
+normal	EpiG.h	/^	string normal;$/;"	m	struct:nameT
+nullGate	EpiG.h	/^	qGate nullGate;		\/\/ nullGate - wire$/;"	m	class:GA
+numIO	EpiG.h	/^	int numIO;		\/\/ number of input\/output wires$/;"	m	struct:qDataGate
+numIO	EpiG.h	/^	int numIO;		\/\/ number of input\/output wires$/;"	m	struct:qGate
+numberGates	EpiG.h	/^	int numberGates;	\/\/ number of gates in this catagory$/;"	m	struct:tempT
+numofgates	EpiG.h	/^	int numofgates;		\/\/ number of gates to be use < MAXNUMOFGATES$/;"	m	class:GA
+numofgates	EpiG.h	/^	int numofgates;$/;"	m	class:QE
+numofnormalgates	EpiG.h	/^	int numofnormalgates;$/;"	m	class:GA
+oldincludedir	Makefile	/^oldincludedir = \/usr\/include$/;"	m
+out_stream	EpiG.h	/^	ofstream out_stream;	\/\/ output file stream$/;"	m	class:GA
+out_stream	EpiG.h	/^	ofstream out_stream;$/;"	m	class:QE
+output	cstGA.cc	/^void GA::output(int individual)$/;"	f	class:GA
+outputBest	cstGA.cc	/^void GA::outputBest()$/;"	f	class:GA
+parentA	EpiG.h	/^	char representation, parentA, parentB;	\/\/ representation$/;"	m	struct:qGate
+parentB	EpiG.h	/^	char representation, parentA, parentB;	\/\/ representation$/;"	m	struct:qGate
+pareto	EpiG.h	/^	bool pareto;$/;"	m	class:GA
+pdfdir	Makefile	/^pdfdir = ${docdir}$/;"	m
+permutativeArray	EpiG.h	/^	qGate *permutativeArray[MAXNUMOFGATES];$/;"	m	class:GA
+phase	EpiG.h	/^	  complex < double >phase;	\/\/each circuit is now generated with phase$/;"	m	struct:Individual
+phase	EpiG.h	/^	int phase;$/;"	m	class:GA
+phases	EpiG.h	/^	  complex < double >phases[MAXNUMOFGATES];$/;"	m	struct:Individual
+pkgdatadir	Makefile	/^pkgdatadir = $(datadir)\/epig$/;"	m
+pkgincludedir	Makefile	/^pkgincludedir = $(includedir)\/epig$/;"	m
+pkglibdir	Makefile	/^pkglibdir = $(libdir)\/epig$/;"	m
+population	EpiG.h	/^	Individual *population[MAXNUMBER];	\/\/ population (array of object Individual)$/;"	m	class:GA
+population	EpiG.h	/^	int population;$/;"	m	class:QE
+populationCounter	EpiG.h	/^	static int populationCounter;	\/\/The counter of individual in the Threaded mode$/;"	m	class:GA
+populationCounter	cstGA.cc	/^int GA::populationCounter;$/;"	m	class:GA	file:
+populationNumber	EpiG.h	/^	int populationNumber;$/;"	m	class:GA
+preBitFunction	EpiG.h	/^	complex<double> preBitFunction[MAXGATEINPUT][MAXGATEDEM];$/;"	m	struct:qFunction
+prefix	Makefile	/^prefix = \/home\/nabhoth\/Projects\/epig_sq$/;"	m
+proba_Crossover	EpiG.h	/^	double proba_Crossover;$/;"	m	class:GA
+proba_Mutation	EpiG.h	/^	double proba_Mutation;$/;"	m	class:GA
+program_transform_name	Makefile	/^program_transform_name = s,x,x,$/;"	m
+progress	EpiG.h	/^	int progress;$/;"	m	class:GA
+psdir	Makefile	/^psdir = ${docdir}$/;"	m
+qDataGate	EpiG.h	/^struct qDataGate$/;"	s
+qFunction	EpiG.h	/^struct qFunction$/;"	s
+qGate	EpiG.h	/^struct qGate$/;"	s
+qState	EpiG.h	/^struct qState$/;"	s
+reduceSegNumber	cstGA.cc	/^void GA::reduceSegNumber(int a)$/;"	f	class:GA
+removeFirst	Qe.cc	/^group* QE::removeFirst(group* m_List)$/;"	f	class:QE
+removeRedund	cstGA.cc	/^void GA::removeRedund(Individual *C)$/;"	f	class:GA
+repairCircuit	cstGA.cc	/^void GA::repairCircuit(int a)$/;"	f	class:GA
+repairForceCircuit	cstGA.cc	/^void GA::repairForceCircuit(int a)$/;"	f	class:GA
+replicator	EpiG.h	/^	int replicator;$/;"	m	class:GA
+representation	EpiG.h	/^	char representation, parentA, parentB;	\/\/ representation$/;"	m	struct:qGate
+representation	EpiG.h	/^	char representation;	\/\/ representation -- initial$/;"	m	struct:Crc
+representation	EpiG.h	/^	char representation;$/;"	m	struct:stringqGate
+restriGate	EpiG.h	/^	int *restriGate[MAXNUMOFGATES];$/;"	m	class:QE
+restricArray	EpiG.h	/^	qGate *restricArray[MAXNUMOFGATES];$/;"	m	class:QE
+restricSegment	Qe.cc	/^void QE::restricSegment()$/;"	f	class:QE
+result	EpiG.h	/^struct result$/;"	s
+resultCircuits	EpiG.h	/^	Crc *resultCircuits[MAXNUMBER];$/;"	m	class:QE
+resultnum	EpiG.h	/^	int resultnum;		\/\/ the number of wire for input and output of the result gate$/;"	m	class:GA
+sbindir	Makefile	/^sbindir = ${exec_prefix}\/sbin$/;"	m
+segPointer	EpiG.h	/^	int segPointer;$/;"	m	class:QE
+segmentNumber	EpiG.h	/^	int segmentNumber;	\/\/ number of segments at the creation, used only for intialization$/;"	m	struct:Individual
+segments	EpiG.h	/^	int segments;$/;"	m	class:GA
+segmentstate	EpiG.h	/^	qState *segmentstate;$/;"	m	class:QE
+setIndv	cstGA.cc	/^void GA::setIndv(Individual *indv1, Individual *indv2)$/;"	f	class:GA
+setSegments	Qe.cc	/^void QE::setSegments(int begin)$/;"	f	class:QE
+setStringArray	cstGA.cc	/^void GA::setStringArray()$/;"	f	class:GA
+setTerminatingCondition	Qe.cc	/^bool QE::setTerminatingCondition(int type)$/;"	f	class:QE
+setTerminatingCondition	cstGA.cc	/^void GA::setTerminatingCondition(int counter)$/;"	f	class:GA
+setgateNormArray	Qe.cc	/^string** QE::setgateNormArray(qGate** array, qGate ideal, int segments, double err){$/;"	f	class:QE
+sharedstatedir	Makefile	/^sharedstatedir = ${prefix}\/com$/;"	m
+sizeL	Qe.cc	/^int QE::sizeL(group* m_List)$/;"	f	class:QE
+solutionArray	EpiG.h	/^	string *solutionArray[MAXNUMOFGATES];$/;"	m	class:QE
+srcdir	Makefile	/^srcdir = .$/;"	m
+startSub	cstGA.cc	/^void* GA::startSub(void *arg)$/;"	f	class:GA
+step	EpiG.h	/^	int step;$/;"	m	struct:result
+stringArray	EpiG.h	/^	tempT stringArray[MAXINDVWIRENUM];	\/\/ sorted by input wires in asending order$/;"	m	class:GA
+stringqGate	EpiG.h	/^struct stringqGate$/;"	s
+subInit	Qe.cc	/^void QE::subInit()$/;"	f	class:QE
+subdir	Makefile	/^subdir = src$/;"	m
+synthAlterations	Qe.cc	/^bool QE::synthAlterations(bool begin){$/;"	f	class:QE
+synthPermutations	Qe.cc	/^bool QE::synthPermutations(bool begin){$/;"	f	class:QE
+synthRestric	Qe.cc	/^void QE::synthRestric(bool begin)$/;"	f	class:QE
+synthSegment	Qe.cc	/^void QE::synthSegment(bool begin)$/;"	f	class:QE
+sysconfdir	Makefile	/^sysconfdir = ${prefix}\/etc$/;"	m
+target_alias	Makefile	/^target_alias = $/;"	m
+tempT	EpiG.h	/^struct tempT$/;"	s
+tensorProduct	tools.cc	/^qGate tensorProduct(qGate *A, qGate *B)$/;"	f
+terminatingCondition	cstGA.cc	/^bool GA::terminatingCondition()$/;"	f	class:GA
+threshold	EpiG.h	/^	double threshold;$/;"	m	class:GA
+top_builddir	Makefile	/^top_builddir = ..$/;"	m
+top_srcdir	Makefile	/^top_srcdir = ..$/;"	m
+trace	EpiG.h	/^	double trace;$/;"	m	struct:qDataGate
+transform	Makefile	/^transform = $(program_transform_name)$/;"	m
+valuedness	EpiG.h	/^	int valuedness;$/;"	m	struct:Individual
+valuedness	EpiG.h	/^	int valuedness;$/;"	m	struct:qDataGate
+valuedness	EpiG.h	/^	int valuedness;$/;"	m	struct:qGate
+valuedness	EpiG.h	/^	int valuedness;$/;"	m	struct:qState
+valuedness	EpiG.h	/^	int valuedness;$/;"	m	struct:stringqGate
+wires	EpiG.h	/^	int wires[MAXGATEINPUT];$/;"	m	struct:stringqGate
+~GA	EpiG.h	/^	 ~GA ()$/;"	f	class:GA
+~QE	EpiG.h	/^	 ~QE ()$/;"	f	class:QE

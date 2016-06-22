@@ -1,0 +1,37 @@
+population 100
+max-segments 25
+min-segments 20
+segments-multi 3
+alterations 10000000
+generations 2000
+mutation 0.05
+crossover 0.7
+alpha 0.80
+beta 0.10
+alpha_1 1
+beta_1 1
+divider 4
+phase 0
+display-level 1
+ga-type 3
+elitism 0
+mutation-type 3
+crossover-type 1
+replication-type 1
+fitness-type 3
+grouped-fitness 1
+pareto-optimization 0
+replication-threshold 0.1
+wire-number 5
+radix 3
+use-exact-match 0
+use-local-forcing 0
+squential-synthesis 0
+use-measurement 0
+measured-wires 0 1
+measured-samples 3
+1:(0,0)(1,0),(1,0)(0,0)
+3:(0,0)(1,0),(1,0)(0,0)
+5:(0,0)(1,0),(1,0)(0,0)
+---------
+

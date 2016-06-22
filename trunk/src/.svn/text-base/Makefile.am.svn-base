@@ -1,0 +1,20 @@
+SUFFIXES = .cu .cc .o .obj
+bin_PROGRAMS = epig
+
+
+if QMDD
+epig_SOURCES=standard_multi.cc tools.cc main.cc cstGA.cc Qe.cc qmddfunc.cc
+else 
+if GSLBLAS
+epig_SOURCES=standard_multi.cc tools.cc main.cc cstGA.cc Qe.cc
+else
+if CUDA
+epig_SOURCES=ccuda_multi.cu cuda_tools.cc main.cc cstGA.cc Qe.cc
+endif
+endif
+endif
+
+CFLAGS=
+.cu.o:  
+	$(CXX) $(CXXFLAGS) $(LDFLAGS) -c $<
+

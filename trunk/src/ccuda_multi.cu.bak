@@ -1,0 +1,929 @@
+#include "EpiG.h"
+// Thread block size
+#define BLOCK_SIZE 32
+// Forward declaration of the device multiplication function
+
+
+// Host multiplication function
+// Compute C = A * B
+//   hA is the height of A
+//   wA is the width of A
+//   wB is the width of B
+
+/****************************************
+ * returns the matrix representing the circuit of a given individual
+ ****************************************/
+qGate* GA::computeCUDANATIVEMatrix(Individual *indi) {
+
+	qGate *temp0, *temp1, *temp2, *myfinalG;
+	int phasecounter0 = 0;
+	int Time = 0;
+	int cost = 0;
+	int csegs = 0;
+	float numIO, val, maxcount;
+	cuComplex temphase;
+	temp0 = new qGate;
+	temp1 = new qGate;
+	temp2 = new qGate;
+	myfinalG = new qGate;
+
+	int w = (int(pow((float) indi->valuedness, (float) indi->ioNumber)));
+	int N = (int(pow(pow((float) indi->valuedness, (float) indi->ioNumber),2)));
+	cuComplex alpha = make_cuFloatComplex(1, 0);
+	cuComplex beta = make_cuFloatComplex(0, 0);
+
+	int even_odd = 0;
+
+	//int the string counters
+	int begin = 0;
+	int end = indi->my_string.find("p", begin + 1);
+	indi->Cost = 0;
+	indi->segmentNumber = 0;
+
+
+
+    int size;
+    // Load A and B to the device
+    cuComplex* Ad;
+    cuComplex* Bd;
+    cuComplex* Cd;
+    size = N * sizeof(cuComplex);
+    cudaMalloc((void**)&Ad, size);
+    cudaMalloc((void**)&Bd, size);
+    cudaMalloc((void**)&Cd, size);
+    // Compute the execution configuration assuming
+    // the matrix dimensions are multiples of BLOCK_SIZE
+    dim3 dimBlock(BLOCK_SIZE, BLOCK_SIZE);
+    dim3 dimGrid(w / dimBlock.x, w / dimBlock.y);
+
+
+
+
+
+	temp2->valuedness = temp0->valuedness;
+	zeroMatrix(temp2, temp0->numIO);
+	/* Initialize the device matrices with the host matrices */
+	//cublasSetVector(N, sizeof(temp2->gateMatrix1[0]), temp2->gateMatrix1, 1, d_C, 1);
+
+
+	while (end > 0) {
+		if ((end - begin) > 1) {
+			csegs++;
+			//get the first  gate of the Segment and copy it
+			for (int a = 0; a <= numofgates; a++)
+				if (indi->gateArray[a]->representation == indi->my_string.at(
+						begin + 1)) {
+					temp0 = ccGate(indi->gateArray[a], temp0);
+					numIO = (float) temp0->numIO;
+					val = (float) temp0->valuedness;
+					if (phase == 1) {
+						temphase = indi->phases[phasecounter0++];
+						maxcount = (int(pow(pow(val, numIO),2)));
+						for (int k = 0; k < maxcount; k++)
+								temp0->gateMatrix1[k] = cuCmulf(
+										temp0->gateMatrix1[k], temphase);
+					}
+					//continue with the cost
+					begin++;
+					cost += indi->gateArray[a]->Cost;
+					break;
+				}
+			//get the next one
+			for (int b = begin + 1; b < end; b++) {
+				for (int a = 0; a <= numofgates; a++)
+					if (indi->gateArray[a]->representation
+							== indi->my_string.at(b)) {
+						temp1 = ccGate(indi->gateArray[a], temp1);
+						temphase = indi->phases[phasecounter0++];
+						val = (float) temp1->valuedness;
+						numIO = (float) temp1->numIO;
+
+						if (phase == 1) {
+							maxcount = (int(pow(pow(val, numIO),2)));
+							for (int k = 0; k < maxcount; k++)
+									temp1->gateMatrix1[k] = cuCmulf(
+											temp1->gateMatrix1[k], temphase);
+						}
+						//continue with the cost
+						cost += indi->gateArray[a]->Cost;
+						a = numofgates * 2;
+						//multiply the gates
+						//using Kronecker multiplication
+						tensorProduct3(temp2, temp0, temp1);
+						temp0 = ccGate(temp2, temp0);
+					}
+			}
+			if (Time == 0) {
+				//if this is the end of the first segment fill the output value
+				myfinalG = ccGate(temp0, myfinalG);
+
+				/* Initialize the device matrices with the host matrices */
+    				cudaMemcpy(Ad, myfinalG->gateMatrix1, size, cudaMemcpyHostToDevice);
+				Time++;
+			} else {
+				if (even_odd == 0){
+					if (Time == 1){
+    						cudaMemcpy(Bd,  temp0->gateMatrix1, size, cudaMemcpyHostToDevice);
+    						matrixMul<<<dimGrid, dimBlock>>>(Cd, Ad, Bd, w, w);
+					}else {	
+    						cudaMemcpy(Ad,  temp0->gateMatrix1, size, cudaMemcpyHostToDevice);
+    						matrixMul<<<dimGrid, dimBlock>>>(Bd, Ad, Cd, w, w);
+					}
+					even_odd = 1;
+				} else {
+    					cudaMemcpy(Ad, temp0->gateMatrix1, size, cudaMemcpyHostToDevice);
+    					matrixMul<<<dimGrid, dimBlock>>>(Cd, Ad, Bd, w, w);
+					even_odd = 0;
+				}
+				Time++;
+			}
+		}
+		//move to the next segment
+		begin = indi->my_string.find("p", end);
+		end = indi->my_string.find("p", begin + 1);
+	}
+
+
+	/* Read the result back */
+	if (even_odd == 0)
+    		cudaMemcpy(myfinalG->gateMatrix1, Bd, size, cudaMemcpyDeviceToHost);
+	else 
+    		cudaMemcpy(myfinalG->gateMatrix1, Cd, size, cudaMemcpyDeviceToHost);
+		
+
+
+	  cudaFree(Ad);
+	  cudaFree(Bd);
+	  cudaFree(Cd);
+	    cudaThreadExit();
+
+
+
+	//check if phase is defined and multiply the whole matrix by it
+	if (phase == 1) {
+		if (cuCrealf(indi->phase) != 0 && cuCimagf(indi->phase) != 0) {
+			val = (float) myfinalG->valuedness;
+			numIO = (float) myfinalG->numIO;
+			maxcount = (int(pow(pow(val, numIO),2)));
+			for (int k = 0; k < maxcount; k++)
+					myfinalG->gateMatrix1[k] = cuCmulf(
+							myfinalG->gateMatrix1[k], indi->phase);
+		}
+	}
+	//actualize the segment number
+	indi->segmentNumber = csegs;
+	indi->Cost = cost;
+	val = ((float) myfinalG->valuedness);
+	numIO = ((float) myfinalG->numIO);
+
+	delete temp0;
+	delete temp1;
+	delete temp2;
+
+	return myfinalG;
+}
+/**************************************************************
+* Matrix multiplication from CUDA Manual
+* Host function
+**************************************************************/
+void Mul(const cuComplex* A, const cuComplex* B, int hA, int wA, int wB,
+         cuComplex* C)
+{
+    int size;
+    // Load A and B to the device
+    cuComplex* Ad;
+    size = hA * wA * sizeof(cuComplex);
+    cudaMalloc((void**)&Ad, size);
+    cudaMemcpy(Ad, A, size, cudaMemcpyHostToDevice);
+    cuComplex* Bd;
+    size = wA * wB * sizeof(cuComplex);
+    cudaMalloc((void**)&Bd, size);
+    cudaMemcpy(Bd, B, size, cudaMemcpyHostToDevice);
+    // Allocate C on the device
+    cuComplex* Cd;
+    size = hA * wB * sizeof(cuComplex);
+    cudaMalloc((void**)&Cd, size);
+    // Compute the execution configuration assuming
+    // the matrix dimensions are multiples of BLOCK_SIZE
+    dim3 dimBlock(BLOCK_SIZE, BLOCK_SIZE);
+    dim3 dimGrid(wB / dimBlock.x, wA / dimBlock.y);
+    // Launch the device computation
+    matrixMul<<<dimGrid, dimBlock>>>(Cd, Ad, Bd, wA, wB);
+    //Muld<<<dimGrid, dimBlock>>>(Ad, Bd, wA, wB, Cd);
+    // Read C from the device
+    cudaMemcpy(C, Cd, size, cudaMemcpyDeviceToHost);
+    // Free device memory
+  cudaFree(Ad);
+  cudaFree(Bd);
+  cudaFree(Cd);
+    cudaThreadExit();
+}
+
+/**************************************************************
+* Matrix multiplication from CUDA Manual
+* Device function
+**************************************************************/
+
+// Device multiplication function called by Mul()
+// Compute C = A * B
+//   wA is the width of A
+//   wB is the width of B
+__global__ void Muld(cuComplex* A, cuComplex* B, int wA, int wB, cuComplex* C)
+{
+    // Block index
+    int bx = blockIdx.x;
+    int by = blockIdx.y;
+    // Thread index
+    int tx = threadIdx.x;
+    int ty = threadIdx.y;
+    // Index of the first sub-matrix of A processed by the block
+    int aBegin = wA * BLOCK_SIZE * by;
+    // Index of the last sub-matrix of A processed by the block
+    int aEnd   = aBegin + wA - 1;
+    // Step size used to iterate through the sub-matrices of A
+    int aStep = BLOCK_SIZE;
+    // Index of the first sub-matrix of B processed by the block
+    int bBegin = BLOCK_SIZE * bx;
+    // Step size used to iterate through the sub-matrices of B
+    int bStep = BLOCK_SIZE * wB;
+    // The element of the block sub-matrix that is computed
+    // by the thread
+    cuComplex Csub = make_cuFloatComplex(0, 0);
+    // Loop over all the sub-matrices of A and B required to
+    // compute the block sub-matrix
+    for (int a = aBegin, b = bBegin;
+             a <= aEnd;
+             a += aStep, b += bStep) {
+        // Shared memory for the sub-matrix of A
+        __shared__ cuComplex As[BLOCK_SIZE][BLOCK_SIZE];
+        // Shared memory for the sub-matrix of B
+        __shared__ cuComplex Bs[BLOCK_SIZE][BLOCK_SIZE];
+	// Load the matrices from global memory to shared memory;
+	// each thread loads one element of each matrix
+	As[ty][tx] = A[a + wA * ty + tx];
+	Bs[ty][tx] = B[b + wB * ty + tx];
+	// Synchronize to make sure the matrices are loaded
+	__syncthreads();
+	// Multiply the two matrices together;
+	// each thread computes one element
+	// of the block sub-matrix
+	for (int k = 0; k < BLOCK_SIZE; ++k)
+		Csub = cuCaddf(Csub, cuCmulf(As[ty][k], Bs[k][tx]));
+	// Synchronize to make sure that the preceding
+	// computation is done before loading two new
+	// sub-matrices of A and B in the next iteration
+	__syncthreads();
+     }
+  // Write the block sub-matrix to global memory;
+  // each thread writes one element
+  int c = wB * BLOCK_SIZE * by + BLOCK_SIZE * bx;
+  C[c + wB * ty + tx] = Csub;
+}
+
+
+/**************************************************************
+* Matrix multiplication from CUDA Manual
+* Device function - version 2
+**************************************************************/
+
+__global__ void
+matrixMul( cuComplex* C, cuComplex* A, cuComplex* B, int wA, int wB)
+{
+    // Block index
+    int bx = blockIdx.x;
+    int by = blockIdx.y;
+
+    // Thread index
+    int tx = threadIdx.x;
+    int ty = threadIdx.y;
+
+    // Index of the first sub-matrix of A processed by the block
+    int aBegin = wA * BLOCK_SIZE * by;
+
+    // Index of the last sub-matrix of A processed by the block
+    int aEnd   = aBegin + wA - 1;
+
+    // Step size used to iterate through the sub-matrices of A
+    int aStep  = BLOCK_SIZE;
+
+    // Index of the first sub-matrix of B processed by the block
+    int bBegin = BLOCK_SIZE * bx;
+
+    // Step size used to iterate through the sub-matrices of B
+    int bStep  = BLOCK_SIZE * wB;
+
+    // Csub is used to store the element of the block sub-matrix
+    // that is computed by the thread
+    cuComplex Csub =  make_cuFloatComplex(0, 0);
+
+    // Loop over all the sub-matrices of A and B
+    // required to compute the block sub-matrix
+    for (int a = aBegin, b = bBegin;
+             a <= aEnd;
+             a += aStep, b += bStep) {
+
+        // Declaration of the shared memory array As used to
+        // store the sub-matrix of A
+        __shared__ cuComplex As[BLOCK_SIZE][BLOCK_SIZE];
+
+        // Declaration of the shared memory array Bs used to
+        // store the sub-matrix of B
+        __shared__ cuComplex Bs[BLOCK_SIZE][BLOCK_SIZE];
+
+        // Load the matrices from device memory
+        // to shared memory; each thread loads
+        // one element of each matrix
+        As[ty][tx] = A[a + wA * ty + tx];
+        Bs[ty][tx] = B[b + wB * ty + tx];
+
+        // Synchronize to make sure the matrices are loaded
+        __syncthreads();
+
+        // Multiply the two matrices together;
+        // each thread computes one element
+        // of the block sub-matrix
+        for (int k = 0; k < BLOCK_SIZE; ++k)
+	    Csub = cuCaddf(Csub, cuCmulf(As[ty][k], Bs[k][tx]));
+
+        // Synchronize to make sure that the preceding
+        // computation is done before loading two new
+        // sub-matrices of A and B in the next iteration
+        __syncthreads();
+    }
+
+    // Write the block sub-matrix to device memory;
+    // each thread writes one element
+    int c = wB * BLOCK_SIZE * by + BLOCK_SIZE * bx;
+    C[c + wB * ty + tx] = Csub;
+}
+
+
+/**
+ * CUDA implemented Matrix Multiplication
+ * using CUBlas
+ */
+void cublasMatrixProduct (qGate *h_A, qGate *h_B, qGate *h_C, int N){
+
+	cuComplex* d_A = 0;
+	cuComplex* d_B = 0;
+	cuComplex* d_C = 0;
+	cuComplex alpha = make_cuFloatComplex(1,0);
+	cuComplex beta = make_cuFloatComplex(0,0);
+	/* Initialize CUBLAS */
+	cublasInit();
+
+	/* Allocate device memory for the matrices */
+	cublasAlloc(N, sizeof(d_A[0]), (void**)&d_A);
+	cublasAlloc(N, sizeof(d_B[0]), (void**)&d_B);
+	cublasAlloc(N, sizeof(d_C[0]), (void**)&d_C);
+
+	/* Initialize the device matrices with the host matrices */
+	cublasSetVector(N, sizeof(h_A->gateMatrix1[0]), h_A->gateMatrix1, 1, d_A, 1);
+	cublasSetVector(N, sizeof(h_B->gateMatrix1[0]), h_B->gateMatrix1, 1, d_B, 1);
+//	cublasSetVector(N, sizeof(h_C->gateMatrix1[0]), h_C->gateMatrix1, 1, d_C, 1);
+
+	/* Performs operation using cublas */
+	int m = sqrt(N);
+	cublasCgemm('n', 'n', m, m, m, alpha,d_A, m, d_B, m, beta, d_C, m);
+
+	/* Read the result back */
+	cublasGetVector(N, sizeof(h_C->gateMatrix1[0]), d_C, 1, h_C->gateMatrix1, 1);
+
+	/* Memory clean up */
+	cublasFree(d_A);
+	cublasFree(d_B);
+	cublasFree(d_C);
+
+	/* Shutdown */
+	cublasShutdown();
+
+	//return EXIT_SUCCESS;
+
+}
+
+
+/****************************************
+ * returns the matrix representing the circuit of a given individual
+ ****************************************/
+qGate* GA::computeCUDAMatrix(Individual *indi) {
+
+	qGate *temp0, *temp1, *temp2, *myfinalG;
+	int phasecounter0 = 0;
+	int Time = 0;
+	int cost = 0;
+	int csegs = 0;
+	float numIO, val, maxcount;
+	cuComplex temphase;
+	temp0 = new qGate;
+	initGate(temp0, resultnum, indi->valuedness,1);
+	temp1 = new qGate;
+	initGate(temp1, resultnum, indi->valuedness,1);
+	temp2 = new qGate;
+	initGate(temp2, resultnum, indi->valuedness,1);
+	myfinalG = new qGate;
+	initGate(myfinalG, resultnum, indi->valuedness,1);
+
+	int w = (int(pow((float) indi->valuedness, (float) indi->ioNumber)));
+	int N = (int(pow(w,2)));
+	cuComplex alpha = make_cuFloatComplex(1, 0);
+	cuComplex beta = make_cuFloatComplex(0, 0);
+
+	int even_odd = 0;
+
+	//int the string counters
+	int begin = 0;
+	int end = indi->my_string.find("p", begin + 1);
+	indi->Cost = 0;
+	indi->segmentNumber = 0;
+
+
+
+
+
+
+//	d_A = 0;
+//	d_B = 0;
+//	d_C = 0;
+	/* Initialize CUBLAS */
+	cublasInit();
+
+	/* Allocate device memory for the matrices */
+//	cublasAlloc(N, sizeof(alpha), (void**)&d_A);
+//	cublasAlloc(N, sizeof(alpha), (void**)&d_B);
+//	cublasAlloc(N, sizeof(alpha), (void**)&d_C);
+
+	temp2->valuedness = temp0->valuedness;
+	zeroMatrix(temp2, temp0->numIO);
+	/* Initialize the device matrices with the host matrices */
+	cublasSetVector(N, sizeof(temp2->gateMatrix1[0]), temp2->gateMatrix1, 1, d_C, 1);
+
+
+	while (end > 0) {
+		if ((end - begin) > 1) {
+			csegs++;
+			//get the first  gate of the Segment and copy it
+			for (int a = 0; a <= numofgates; a++)
+				if (gateArray[a]->representation == indi->my_string.at(
+				//if (indi->gateArray[a]->representation == indi->my_string.at(
+						begin + 1)) {
+					temp0 = ccGate(gateArray[a], temp0);
+					//temp0 = ccGate(indi->gateArray[a], temp0);
+					numIO = (float) temp0->numIO;
+					val = (float) temp0->valuedness;
+					if (phase == 1) {
+						temphase = indi->phases[phasecounter0++];
+						maxcount = (int(pow(pow(val, numIO),2)));
+						for (int k = 0; k < maxcount; k++)
+								temp0->gateMatrix1[k] = cuCmulf(
+										temp0->gateMatrix1[k], temphase);
+					}
+					//continue with the cost
+					begin++;
+					//cost += indi->gateArray[a]->Cost;
+					cost += gateArray[a]->Cost;
+					break;
+				}
+			//get the next one
+			for (int b = begin + 1; b < end; b++) {
+				for (int a = 0; a <= numofgates; a++)
+					//if (indi->gateArray[a]->representation
+					if (gateArray[a]->representation
+							== indi->my_string.at(b)) {
+						//temp1 = ccGate(indi->gateArray[a], temp1);
+						temp1 = ccGate(gateArray[a], temp1);
+						temphase = indi->phases[phasecounter0++];
+						val = (float) temp1->valuedness;
+						numIO = (float) temp1->numIO;
+
+						if (phase == 1) {
+							maxcount = (int(pow(pow(val, numIO),2)));
+							for (int k = 0; k < maxcount; k++)
+									temp1->gateMatrix1[k] = cuCmulf(
+											temp1->gateMatrix1[k], temphase);
+						}
+						//continue with the cost
+						cost += gateArray[a]->Cost;
+						//cost += indi->gateArray[a]->Cost;
+						a = numofgates * 2;
+						//multiply the gates
+						//using Kronecker multiplication
+						tensorProduct3(temp2, temp0, temp1);
+						temp0 = ccGate(temp2, temp0);
+					}
+			}
+			if (Time == 0) {
+				//if this is the end of the first segment fill the output value
+				myfinalG = ccGate(temp0, myfinalG);
+
+				/* Initialize the device matrices with the host matrices */
+				cublasSetVector(N, sizeof(myfinalG->gateMatrix1[0]), myfinalG->gateMatrix1, 1, d_A, 1);
+				Time++;
+			} else {
+				if (even_odd == 0){
+					if (Time == 1){
+						cublasSetVector(N, sizeof(temp0->gateMatrix1[0]), temp0->gateMatrix1, 1, d_B, 1);
+						cublasCgemm('n', 'n', w, w, w, alpha,d_A, w, d_B, w, beta, d_C, w);
+					}else {	
+						cublasSetVector(N, sizeof(temp0->gateMatrix1[0]), temp0->gateMatrix1, 1, d_A, 1);
+						cublasCgemm('n', 'n', w, w, w, alpha,d_A, w, d_C, w, beta, d_B, w);
+					}
+					even_odd = 1;
+				} else {
+					cublasSetVector(N, sizeof(temp0->gateMatrix1[0]), temp0->gateMatrix1, 1, d_A, 1);
+					cublasCgemm('n', 'n', w, w, w, alpha,d_A, w, d_B, w, beta, d_C, w);
+					even_odd = 0;
+				}
+				Time++;
+			}
+		}
+		//move to the next segment
+		begin = indi->my_string.find("p", end);
+		end = indi->my_string.find("p", begin + 1);
+	}
+
+
+	/* Read the result back */
+	if (even_odd == 0)
+		cublasGetVector(N, sizeof(myfinalG->gateMatrix1[0]), d_B, 1, myfinalG->gateMatrix1, 1);
+	else 
+		cublasGetVector(N, sizeof(myfinalG->gateMatrix1[0]), d_C, 1, myfinalG->gateMatrix1, 1);
+		
+
+	/* Memory clean up */
+//	cublasFree(d_A);
+//	cublasFree(d_B);
+//	cublasFree(d_C);
+
+	/* Shutdown */
+//	cublasShutdown();
+
+
+
+	//check if phase is defined and multiply the whole matrix by it
+	if (phase == 1) {
+		if (cuCrealf(indi->phase) != 0 && cuCimagf(indi->phase) != 0) {
+			val = (float) myfinalG->valuedness;
+			numIO = (float) myfinalG->numIO;
+			maxcount = (int(pow(pow(val, numIO),2)));
+			for (int k = 0; k < maxcount; k++)
+					myfinalG->gateMatrix1[k] = cuCmulf(
+							myfinalG->gateMatrix1[k], indi->phase);
+		}
+	}
+	//actualize the segment number
+	indi->segmentNumber = csegs;
+	indi->Cost = cost;
+	val = ((float) myfinalG->valuedness);
+	numIO = ((float) myfinalG->numIO);
+
+	destroyGate(temp0);
+	delete temp0;
+	destroyGate(temp1);
+	delete temp1;
+	destroyGate(temp2);
+	delete temp2;
+
+	return myfinalG;
+}
+
+/****************************************
+* Generates a set of states representing a given sequence: the input qubit is the one before the last from the bottom
+* the output qubit is the bottom one
+* both input and output qubits must be measured after each operation in order to be able to initialize them properly
+* for the next step.
+* A sequence is detected when for all input elements the output is |0> and for the last input value the output is |1>
+ ****************************************/
+void* GA::doMeasureFASeqFitness(Individual *ind, bool display) {
+
+	//define temporal variables for the results and the manupaltion
+	//of the measurement
+	qGate *measures_o[10], *measures_i[10], *myfinalG;
+	float val = (float) finalGate->valuedness;
+	float numIO = (float) finalGate->numIO;
+	float err,maxcount = 0;
+	int temp1;
+	int l = (int(pow(val, numIO)));
+	int x = (int(pow(val, numIO)));
+	int y = (int(pow(val, numIO)));
+	cuComplex inter[(int(pow(val, numIO)))];
+	cuComplex inter_b[(int(pow(val, numIO)))];
+	cuComplex logicresult[(int(pow(val, numIO)))];
+	cuComplex sta[(int(pow(val, numIO)))];
+	cuComplex stb[(int(pow(val, numIO)))];
+	cuComplex expectations[(int(pow(val, numIO) * val))], alphas;
+	cuComplex resultingTotalError[(int(pow(val, numIO)))][measurement * (int) val];
+	cuComplex resultingTotal[(int(pow(val, numIO)))][measurement * (int) val];
+	complex<float> temp_val;
+	bool set;
+
+	Individual *indi = ind;
+	indi->Error = 0;
+	indi->fitness = 0;
+	indi->Cost = 0;
+
+	//threaded code
+	long time = clock();
+	//accelerated matrix computation
+	myfinalG = computeCUDAMatrix(indi);
+	numIO = (float) myfinalG->numIO;
+	//check if phase is defined and multiply the whole matrix by it
+	if (phase == 1) {
+		maxcount = (int(pow(pow(val, numIO),2)));
+		if (cuCrealf(indi->phase) != 0 && cuCimagf(indi->phase) != 0) {
+			for (int k = 0; k < maxcount; k++)
+					myfinalG->gateMatrix1[k] = cuCmulf(
+							myfinalG->gateMatrix1[k], indi->phase);
+		}
+	}
+
+	//only single qubit based sequence detection
+	for (int r = 0; r < val; r++) {
+		measures_o[r] = measurements[r];
+		measures_i[r] = measurements[(int) val + r];
+	}
+
+if (display){
+		out_stream<<indi->my_string<<endl;
+}
+
+	//for all input states l initiate the vector at time 0
+	for (int w = 0; w < l; w++)
+		sta[w] = make_cuFloatComplex(0, 0);
+	//for all values in the desireed sequence
+	for (int k = 0; k < measured_desired_output_records; k++) {
+
+		//empty all intermediary variables
+		for (int w = 0; w < l; w++)
+			inter[w] = logicresult[w] = stb[w] = make_cuFloatComplex(0, 0);
+		//set the k-th input from the sequence to desired value and the output to 0
+		if (k == 0){
+			if (cuCrealf(sequence_desired[k][0]) == 0)
+				sta [0] = make_cuFloatComplex(1, 0);
+			else
+				sta [2] = make_cuFloatComplex(1, 0);
+		} else {
+			set = false;
+			if (cuCrealf(sequence_desired[k][0]) == 0){
+				int divider = l/(int(pow(val, numIO-2)));
+				for (int w = 0; w < l; w++){
+					if (cuCrealf(sta[w]) != 0 || cuCimagf(sta[w]) != 0){
+						temp1 = w / divider;
+						stb[temp1*divider] = sta[w];
+						set = true;
+					}
+				}
+			
+			} else {
+				int divider = l/(int(pow(val, numIO-2)));
+				for (int w = 0; w < l; w++){
+					if (cuCrealf(sta[w]) != 0 || cuCimagf(sta[w]) != 0){
+						temp1 = w / divider;
+						stb[(temp1*divider)+2] = sta[w];
+						set = true;
+					}
+				}
+			}
+			if (!set)
+				if (cuCrealf(sequence_desired[k][0]) == 0){
+					stb[0] = make_cuFloatComplex(1, 0);
+				} else {
+					stb[2] = make_cuFloatComplex(1, 0);
+				}
+		for (int w = 0; w < l; w++)
+			sta[w] = stb[w];
+		}
+
+		alphas = make_cuFloatComplex(0, 0);
+
+		//propagate the state through the matrix
+if (display){
+		out_stream << "I: ";
+		for (int w = 0; w < l; w++)
+			out_stream<<"("<<cuCrealf(sta[w])<<","<<cuCimagf(sta[w])<<")";
+		out_stream<<endl;
+}
+		for (int i = 0; i < l; i++) {
+			for (int j = 0; j < l; j++) {
+				logicresult[i] = cuCaddf(logicresult[i], cuCmulf(sta[j],
+						myfinalG->gateMatrix1[i*l+j]));
+			}
+		}
+
+if (display){
+		out_stream << "O: ";
+		for (int w = 0; w < l; w++)
+			out_stream<<"("<<cuCrealf(logicresult[w])<<","<<cuCimagf(logicresult[w])<<")";
+		out_stream<<endl;
+}
+		//measure for only the desired state of the single output qubit
+		for (int w = 0; w < l; w++)
+			inter[w] = inter_b[w] = make_cuFloatComplex(0, 0);
+		//measure for 0 when non final sequence element
+		if (k != measured_desired_output_records-1)
+			for (int i = 0; i < l; i++) {
+				//rows
+				for (int j = 0; j < l; j++) {
+					inter[i] = cuCaddf(inter[i], cuCmulf(logicresult[j],measures_o[0]->gateMatrix1[i*l+j]));
+				}
+			}
+		else
+			//measure for 1 when the end of the sequence was reached
+			for (int i = 0; i < l; i++) {
+				//rows
+				for (int j = 0; j < l; j++) {
+					inter[i] = cuCaddf(inter[i], cuCmulf(logicresult[j],measures_o[1]->gateMatrix1[i*l+j]));
+				}
+			}
+		
+if (display){
+		out_stream << "Measure Output: ";
+		for (int w = 0; w < l; w++)
+			out_stream<<"("<<cuCrealf(inter[w])<<","<<cuCimagf(inter[w])<<")";
+		out_stream<<endl;
+}
+
+		expectations[0] = make_cuFloatComplex(0, 0);
+		//the finnal inner product for p(r) - generate the expectation for the measured output
+		for (int j = 0; j < l; j++) {
+			expectations[0] = cuCaddf(expectations[0], cuCmulf(cuConjf(inter[j]),inter[j]));
+		}
+
+		//set the probability of obtaining the desired output for this input value
+		resultingTotal[k][0] = expectations[0];
+				
+		//skip don't cares
+		if (cuCrealf(sequence_desired[k][1]) == 0 && cuCimagf(sequence_desired[k][1]) == -1) {
+			resultingTotalError[k][(int) val]     = make_cuFloatComplex(0, 0);
+		} else {
+			//calculate the error if this is not to be considered as don't care
+			resultingTotalError[k][(int) val] = make_cuFloatComplex(sqrt(pow(cuCrealf(cuCsubf(resultingTotal[k][0],sequence_desired[k][1])),(float) 2)), 0);
+			//resultingTotalError[k][(int) val] = make_cuFloatComplex(sqrt(pow(cuCrealf(cuCsubf(resultingTotal[k][0])),(float) 2)), 0);
+		}
+
+
+
+		temp_val = complex<float> (cuCrealf(expectations[0]), cuCimagf(expectations[0]));
+		temp_val = sqrt(temp_val);
+		alphas = make_cuFloatComplex(real(temp_val), imag(temp_val));
+
+		//if the measurement generated at least some output
+		if (!(cuCrealf( alphas) == 0 && cuCimagf( alphas) == 0)){
+			//if the output qubit was measured in 0, normalize the vector
+			for (int j = 0; j < l; j++) {
+				inter[j] = cuCdivf(inter[j], alphas);
+			}
+		} else {
+			//if the measurement was not succesful, use the output of the circuit 
+			for (int j = 0; j < l; j++) {
+				inter[j] = logicresult[j];
+			}
+		}
+
+
+
+		//measure the input qubit for 0 - to reset it and allow consequent initialization
+		if (k < measured_desired_output_records - 1)
+			if (cuCrealf(sequence_desired[k+1][0]) == 0){
+				for (int i = 0; i < l; i++) {
+					//rows
+					for (int j = 0; j < l; j++) {
+						inter_b[i] = cuCaddf(inter_b[i], cuCmulf(inter[j],measures_i[0]->gateMatrix1[i*l+j]));
+					}
+				}
+			} else {
+				for (int i = 0; i < l; i++) {
+					//rows
+					for (int j = 0; j < l; j++) {
+						inter_b[i] = cuCaddf(inter_b[i], cuCmulf(inter[j],measures_i[1]->gateMatrix1[i*l+j]));
+					}
+				}
+			}	
+
+if (display){
+		out_stream << "Measure Input: ";
+		for (int w = 0; w < l; w++)
+			out_stream<<"("<<cuCrealf(inter_b[w])<<","<<cuCimagf(inter_b[w])<<")";
+		out_stream<<endl;
+
+
+}
+		expectations[0] = make_cuFloatComplex(0, 0);
+		//calculate the expectation value for measureing the qubit in state |0>
+		for (int j = 0; j < l; j++) {
+			expectations[0] = cuCaddf(expectations[0], cuCmulf(cuConjf(inter_b[j]),inter_b[j]));
+		}
+		temp_val = complex<float> (cuCrealf(expectations[0]), cuCimagf(expectations[0]));
+		temp_val = sqrt(temp_val);
+		alphas = make_cuFloatComplex(real(temp_val), imag(temp_val));
+
+		//if the input qubit was measured in 0, normalize the vector
+		if (!(cuCrealf( alphas) == 0 && cuCimagf( alphas) == 0)){
+			for (int j = 0; j < l; j++) {
+				inter_b[j] = cuCdivf(inter_b[j], alphas);
+			}
+
+			//copy the current state vector as the next input
+			for (int i = 0; i < l; i++){ 
+				sta[i] = make_cuFloatComplex(cuCrealf( inter_b[i]),cuCimagf( inter_b[i]));
+			}
+		} else {
+			//copy the previous intermediary state vector as the next input without normalization
+			for (int i = 0; i < l; i++){ 
+				sta[i] = make_cuFloatComplex(cuCrealf( inter[i]),cuCimagf( inter[i]));
+			}
+		}
+	}
+
+	int m;
+	err = 0;
+	//calculate the overall error
+	for (int c = 0; c < measurement; c++) {
+		m = measured_desired_output_records;
+		inter[0] = make_cuFloatComplex(0, 0);
+		for (int e = 0; e < measured_desired_output_records; e++) {
+			//inter[0] = cuCmulf(inter[0], resultingTotal[e][0]);
+			inter[0] = cuCaddf(inter[0], make_cuFloatComplex(cuCrealf(resultingTotalError[e][(int) val]), 0));
+		}
+		err += cuCrealf(cuCdivf(inter[0], make_cuFloatComplex(m, 0)));
+	}
+	err /= measurement;
+	indi->Error = err;
+
+	//generate fitness value
+	if (indi->Error != 0) {
+		switch (replicator) {
+		case 0:
+			//simple fitness1
+			indi->fitness = (1 - indi->Error);
+			break;
+		case 1:
+			//simple fitness1
+			indi->fitness = (1 / (indi->Error + 1));
+			break;
+		case 2:
+			//scaled complex fitness1
+			indi->fitness = (alpha * (1 - indi->Error) + beta * (exp(-pow(abs(
+					divider - indi->Cost), 2))));
+			break;
+		case 3:
+			//scaled complex fitness2
+			indi->fitness = (alpha * (1 / (indi->Error + 1)) + beta * (exp(
+					-pow(abs(divider - indi->Cost), 2))));
+			break;
+		case 4:
+			indi->fitness = (1 - indi->Error);
+			break;
+		case 5:
+			indi->fitness = exp(-indi->Error);
+			break;
+		}
+	} else {
+		indi->Error = 0;
+		indi->fitness = 1;//we found a good individual;
+	}
+//	cout<<indi->fitness<<endl;
+	if (display) {
+
+		out_stream<< "Circuit Matrix:"<<endl;
+		for (int i = 0; i < l; i++) {
+			for (int j = 0; j < l; j++) {
+				out_stream<<"("<<cuCrealf(myfinalG->gateMatrix1[i*l+j])<<","<<cuCimagf(myfinalG->gateMatrix1[i*l+j])<<")";
+			}
+			out_stream<<endl;
+		}
+		out_stream<<endl;
+
+
+		out_stream << "Error: " << indi->Error << endl;
+		out_stream << "Fitness: " << indi->fitness << endl;
+		out_stream << "Valuedness: " << indi->valuedness << endl;
+		out_stream << endl;
+		out_stream << "Sequence length: "<<measured_desired_output_records<<endl;;
+		out_stream << "Sequence: ";
+
+		for (int m = 0; m < measured_desired_output_records; m++) 
+			out_stream<<"  "<<cuCrealf(sequence_desired[m][0])<<"  ";
+		
+		out_stream << endl<<" Desired: ";
+		for (int m = 0; m < measured_desired_output_records; m++) 
+			out_stream<<"("<<cuCrealf(sequence_desired[m][1])<<","<<cuCimagf(sequence_desired[m][1])<<")";
+
+
+		out_stream << endl<<"Observables: ";
+		for (int m = 0; m < measured_desired_output_records-1; m++) 
+			out_stream<<"  0  ";
+		out_stream<<"  1  ";
+
+		out_stream << endl<<"Obtained: ";
+		for (int m = 0; m < measured_desired_output_records; m++) 
+			out_stream<<"("<<cuCrealf(resultingTotal[m][0])<<","<<cuCimagf(resultingTotal[m][0])<<")";
+
+		out_stream << endl <<" -------- " << endl;
+	}
+
+	time = clock() -time ;
+	//cout<<"CUBLAS fitness done: "<<(float)(time/CLOCKS_PER_SEC)<<", for "<<indi->ioNumber<<" qubits "<<endl;
+	destroyGate(myfinalG);
+	delete (myfinalG);
+	return 0;
+}

@@ -1,0 +1,68 @@
+#  EpiG Project
+
+# ------------ Configure ------------------
+
+
+#Comment the following variables according to your system configuration
+
+
+#USE_MPI=_  #Use MPI for synchronization
+
+TOPDIR=/usr/src/rtai-24.1.9
+
+DEBUG=_ #For debugging 
+
+
+#--------------------------------------------------------------------
+#-----You should not need to modify the data  bellow ----------------
+#--------------------------------------------------------------------
+
+# ----------------- DEBUGGING ------------------
+ifdef DEBUG
+DEBUGFLAG=-DDEBUGGING
+endif 
+
+# set the include path found by configure
+INCLUDES= $(all_includes)
+
+
+# -----------------  GENLOCK and SYNCHRONIZATION   --------------------
+   ifdef USE_MPI
+	LDFLAGS = -lmpich -L./ $(all_libraries)
+	main_SOURCE = main_mpi.cc
+   else
+	LDFLAGS = -lpthread -L./ $(all_libraries)
+	main_SOURCE = main.cc
+   endif
+
+	ifdef USE_MPI
+	   CC=mpicc	
+	   CXX=mpicxx	
+	else
+	   CC=gcc
+	   CXX=g++
+	endif
+	CPPFLAGS= -Wall -O2 -I.//  $(DEBUGFLAG) $(FLIPFLAG) $(GLASSFLAG) $(GENLOCKFLAG) $(NVIDIAFLAG)
+	LD = $(CXX)
+
+
+#--------------------- Common Part --------------
+EXT_OBJ=.o
+
+bin_PROGRAMS = epig
+epig_SOURCES = $(main_SOURCE) tools.cc cstGA.cc Qe.cc
+SRCS		= $(epig_SOURCES)
+OBJS            = ${SRCS:.c=$(EXT_OBJ)} 
+
+all: $(bin_PROGRAMS)  
+
+$(bin_PROGRAMS): Makefile $(OBJS) 
+	$(LD) $(LDFLAGS)  -o $@ $(OBJS)
+
+.cc.o : 
+	$(CXX) $(CPPFLAGS) -c $< -o $@
+
+clean:
+	rm -f core *.o */*.o */*/*.o *~ *.bak $(bin_PROGRAMS)  
+
+
