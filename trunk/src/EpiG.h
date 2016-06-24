@@ -277,6 +277,7 @@ cuComplex cuFloatComplex_pow (cuComplex, cuComplex);
 cuComplex cuFloatComplex_sqrt (cuComplex);
 cuComplex cuFloatComplex_div (cuComplex, cuComplex);
 cuComplex cuFloatComplex_sub (cuComplex, cuComplex);
+void vectorInitInit(int, cuComplex*);
 
 #ifdef __QMDD__
 void decodeGateToRevLib(qGate *);

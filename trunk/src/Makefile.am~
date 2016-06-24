@@ -7,8 +7,8 @@ else
 if SQNC
 epig_SPECS=cuda_sqncs.cu
 else
-if STDRT
-epig_SPECS=cuda_stdnrt.cu
+if ELEM
+epig_SPECS=""
 endif
 endif
 endif
@@ -17,7 +17,7 @@ if QMDD
 epig_SOURCES= $(epig_SPECS) standard_multi.cc tools.cc main.cc cstGA.cc Qe.cc qmddfunc.cc
 else
 if CUDA
-epig_SOURCES= $(epig_SPECS) ccuda_multi.cu cuda_tools.cc main.cc cstGA.cc Qe.cc
+epig_SOURCES= $(epig_SPECS) cuda_tools.cu tools.cc main.cc cstGA.cc Qe.cc
 else 
 if GSLBLAS
 epig_SOURCES= $(epig_SPECS) standard_multi.cc tools.cc main.cc cstGA.cc Qe.cc

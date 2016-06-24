@@ -6,6 +6,7 @@
 
 #include "EpiG.h"
 
+
 /****************************************
  * These are various functions for cstGA
  * taken from the GSL library and changed for our purpose and data type 
@@ -262,18 +263,6 @@ qGate* cGate(qGate *Circ) {
 	}
 	return Circf;
 }
-
-/****************************************
- * In development - calculates the error for a density matrix
- * **************************************/
-
-void densityErrorMatrix(qGate *A, qGate *B, qGate *C) {
-	if (A->numIO != B->numIO)
-		return;
-	C->numIO = A->numIO;
-	cblasMatrixProduct(A, B, C);
-}
-
 /****************************************
  * Matrix Multiplication using CBLAS libs
  * **************************************/
@@ -287,6 +276,18 @@ void cblasMatrixProduct(qGate *A, qGate *B, qGate *C) {
 }
 
 
+/****************************************
+ * In development - calculates the error for a density matrix
+ * **************************************/
+
+/*void densityErrorMatrix(qGate *A, qGate *B, qGate *C) {
+	if (A->numIO != B->numIO)
+		return;
+	C->numIO = A->numIO;
+	int w = (int)(pow((float)(A->valuedness), (float)(A->numIO)));
+	Mulm(A->gateMatrix1, B->gateMatrix1, w, C->gateMatrix1, d_M1,  d_M2, d_M3);
+}
+*/
 /***************************************
  *Genereates a random phase for a circuit based on simple rules
  ****************************************/
@@ -331,7 +332,7 @@ void generatePhases(Individual *I) {
 }
 
 /****************************************
- * Fills the content of a matrix size resultnum to I
+ * Fills the content of a matrix size resultnum to 0
  * **************************************/
 void zeroMatrix(qGate *A, int resultnum) {
 	A -> numIO = resultnum;
@@ -340,6 +341,18 @@ void zeroMatrix(qGate *A, int resultnum) {
 	int maxcount = (int(pow(pow((float) val, (float) A->numIO),2)));
 	for (int i = 0; i < maxcount; i++) {
 		A->gateMatrix1[i] = make_cuFloatComplex(0, 0);
+	}
+}
+/****************************************
+ * Fills the content of a matrix size resultnum to I
+ * **************************************/
+void iMatrix(qGate *A, int resultnum) {
+	A -> numIO = resultnum;
+	A -> Cost = 1;
+	int val = A->valuedness;
+	int maxcount = (int(pow(pow((float) val, (float) A->numIO),2)));
+	for (int i = 0; i < maxcount; i++) {
+		A->gateMatrix1[i] = make_cuFloatComplex(1, 0);
 	}
 }
 /****************************************
@@ -359,10 +372,10 @@ void dcMatrix(qGate *A, int resultnum) {
 /****************************************
  * Init a Vector to all 0
  * **************************************/
-void vectorInitZero(int w, cuComplex *d_Vec){
-	for (int m = 0; m < w; m++)
-                d_Vec[m] = make_cuFloatComplex(0, 0);
-}
+//void vectorInitZero(int w, cuComplex *d_Vec){
+//	for (int m = 0; m < w; m++)
+//                d_Vec[m] = make_cuFloatComplex(0, 0);
+//}
 /****************************************
  * Dot Multiply two vectors
  * **************************************/
@@ -393,7 +406,7 @@ void initGate(qGate *A, int resultnum, int valuedness, int cost) {
 	A -> numIO = resultnum;
 	int val = A->valuedness = valuedness;
 	A -> Cost = cost;
-	int maxcount = (int)(pow(pow((float) valuedness, (float) resultnum),2.0));
+	int maxcount = int(pow(pow((float) val, (float) A->numIO),2));
 	A->gateMatrix1 = new cuComplex[maxcount];
 }
 
@@ -488,11 +501,10 @@ short sign(float c){
 }
 
 
-/**********************************
+/*
 * accepts a decimal integer and returns a binary coded string
 * only for unsigned values
- **********************************/
-
+*/
 void dec2bin(long decimal, char *binary, int radix)
 {
 	int k = 0, n = 0;

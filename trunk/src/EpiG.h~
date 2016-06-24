@@ -253,6 +253,8 @@ void initGate(qGate *, int, int, int);
 void initMatrix(qGate *, int); 
 //generates empty Matrix
 void zeroMatrix(qGate *, int); 
+//generates identity Matrix
+void iMatrix(qGate *, int); 
 //generates matrix filled with don't cares
 void dcMatrix(qGate *, int);
 //return the number of proper gates in  the String

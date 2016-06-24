@@ -219,7 +219,7 @@ CUDA_LIBS =  -L/usr/local/cuda/lib/cuda -lcudart
 CUDA_PREFIX = /usr/local/cuda
 CXX = /usr/local/cuda/bin/nvcc
 CXXDEPMODE = depmode=none
-CXXFLAGS =  -D__CUDA__ -D__CUDA_SDK__ -I/usr/local/cuda/include -D__GSLBLAS__ -I/usr/include/gsl -m64  -D__ELEM__
+CXXFLAGS =  -D__CUDA__ -D__CUDA_SDK__ -I/usr/local/cuda/include -D__GSLBLAS__ -I/usr/include/gsl -m64  -D__MSRMNT__
 CYGPATH_W = echo
 DEFS = -DHAVE_CONFIG_H
 DEPDIR = .deps

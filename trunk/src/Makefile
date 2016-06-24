@@ -99,27 +99,19 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
-am__epig_SOURCES_DIST = cuda_stdnrt.cu cuda_sqncs.cu cuda_msrmnt.cu \
-	standard_multi.cc tools.cc main.cc cstGA.cc Qe.cc \
-	ccuda_multi.cu cuda_tools.cc qmddfunc.cc
-am__objects_1 =  \
-	cuda_stdnrt.$(OBJEXT)
-#am__objects_1 = cuda_sqncs.$(OBJEXT)
-#am__objects_1 = cuda_msrmnt.$(OBJEXT)
-#am_epig_OBJECTS =  \
-#	$(am__objects_1) \
-#	standard_multi.$(OBJEXT) \
+am__epig_SOURCES_DIST = standard_multi.cc tools.cc main.cc cstGA.cc \
+	Qe.cc cuda_tools.cu qmddfunc.cc
+#am_epig_OBJECTS = standard_multi.$(OBJEXT) \
 #	tools.$(OBJEXT) \
 #	main.$(OBJEXT) \
 #	cstGA.$(OBJEXT) \
 #	Qe.$(OBJEXT)
-am_epig_OBJECTS = $(am__objects_1) \
-	ccuda_multi.$(OBJEXT) \
-	cuda_tools.$(OBJEXT) main.$(OBJEXT) \
+am_epig_OBJECTS = cuda_tools.$(OBJEXT) \
+	tools.$(OBJEXT) main.$(OBJEXT) \
 	cstGA.$(OBJEXT) Qe.$(OBJEXT)
-#am_epig_OBJECTS = $(am__objects_1) standard_multi.$(OBJEXT) \
-#	tools.$(OBJEXT) main.$(OBJEXT) cstGA.$(OBJEXT) \
-#	Qe.$(OBJEXT) qmddfunc.$(OBJEXT)
+#am_epig_OBJECTS = standard_multi.$(OBJEXT) tools.$(OBJEXT) \
+#	main.$(OBJEXT) cstGA.$(OBJEXT) Qe.$(OBJEXT) \
+#	qmddfunc.$(OBJEXT)
 epig_OBJECTS = $(am_epig_OBJECTS)
 epig_LDADD = $(LDADD)
 AM_V_P = $(am__v_P_$(V))
@@ -198,7 +190,7 @@ CUDA_LIBS =  -L/usr/local/cuda/lib/cuda -lcudart
 CUDA_PREFIX = /usr/local/cuda
 CXX = /usr/local/cuda/bin/nvcc
 CXXDEPMODE = depmode=none
-CXXFLAGS =  -D__CUDA__ -D__CUDA_SDK__ -I/usr/local/cuda/include -D__GSLBLAS__ -I/usr/include/gsl -m64  -D__ELEM__
+CXXFLAGS =  -D__CUDA__ -D__CUDA_SDK__ -I/usr/local/cuda/include -D__GSLBLAS__ -I/usr/include/gsl -m64  -D__MSRMNT__
 CYGPATH_W = echo
 DEFS = -DHAVE_CONFIG_H
 DEPDIR = .deps
@@ -287,11 +279,20 @@ top_build_prefix = ../
 top_builddir = ..
 top_srcdir = ..
 SUFFIXES = .cu .cc .o .obj
-epig_SPECS = cuda_stdnrt.cu
-#epig_SPECS = cuda_sqncs.cu
-#epig_SPECS = cuda_msrmnt.cu
 #epig_SOURCES = $(epig_SPECS) standard_multi.cc tools.cc main.cc cstGA.cc Qe.cc
-epig_SOURCES = $(epig_SPECS) ccuda_multi.cu cuda_tools.cc main.cc cstGA.cc Qe.cc
+epig_SOURCES = $(epig_SPECS) cuda_tools.cu tools.cc main.cc cstGA.cc Qe.cc
+
+#if MSRMNT
+#epig_SPECS=cuda_msrmnt.cu
+#else
+#if SQNC
+#epig_SPECS=cuda_sqncs.cu
+#else
+#if ELEM
+#epig_SPECS=""
+#endif
+#endif
+#endif
 #epig_SOURCES = $(epig_SPECS) standard_multi.cc tools.cc main.cc cstGA.cc Qe.cc qmddfunc.cc
 all: all-am
 
@@ -381,7 +382,6 @@ distclean-compile:
 
 include ./$(DEPDIR)/Qe.Po
 include ./$(DEPDIR)/cstGA.Po
-include ./$(DEPDIR)/cuda_tools.Po
 include ./$(DEPDIR)/main.Po
 include ./$(DEPDIR)/qmddfunc.Po
 include ./$(DEPDIR)/standard_multi.Po

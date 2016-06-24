@@ -99,27 +99,19 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
-am__epig_SOURCES_DIST = cuda_stdnrt.cu cuda_sqncs.cu cuda_msrmnt.cu \
-	standard_multi.cc tools.cc main.cc cstGA.cc Qe.cc \
-	ccuda_multi.cu cuda_tools.cc qmddfunc.cc
-@ELEM_TRUE@@MSRMNT_FALSE@@SQNC_FALSE@am__objects_1 =  \
-@ELEM_TRUE@@MSRMNT_FALSE@@SQNC_FALSE@	cuda_stdnrt.$(OBJEXT)
-@MSRMNT_FALSE@@SQNC_TRUE@am__objects_1 = cuda_sqncs.$(OBJEXT)
-@MSRMNT_TRUE@am__objects_1 = cuda_msrmnt.$(OBJEXT)
-@CUDA_FALSE@@GSLBLAS_TRUE@@QMDD_FALSE@am_epig_OBJECTS =  \
-@CUDA_FALSE@@GSLBLAS_TRUE@@QMDD_FALSE@	$(am__objects_1) \
-@CUDA_FALSE@@GSLBLAS_TRUE@@QMDD_FALSE@	standard_multi.$(OBJEXT) \
+am__epig_SOURCES_DIST = standard_multi.cc tools.cc main.cc cstGA.cc \
+	Qe.cc cuda_tools.cu qmddfunc.cc
+@CUDA_FALSE@@GSLBLAS_TRUE@@QMDD_FALSE@am_epig_OBJECTS = standard_multi.$(OBJEXT) \
 @CUDA_FALSE@@GSLBLAS_TRUE@@QMDD_FALSE@	tools.$(OBJEXT) \
 @CUDA_FALSE@@GSLBLAS_TRUE@@QMDD_FALSE@	main.$(OBJEXT) \
 @CUDA_FALSE@@GSLBLAS_TRUE@@QMDD_FALSE@	cstGA.$(OBJEXT) \
 @CUDA_FALSE@@GSLBLAS_TRUE@@QMDD_FALSE@	Qe.$(OBJEXT)
-@CUDA_TRUE@@QMDD_FALSE@am_epig_OBJECTS = $(am__objects_1) \
-@CUDA_TRUE@@QMDD_FALSE@	ccuda_multi.$(OBJEXT) \
-@CUDA_TRUE@@QMDD_FALSE@	cuda_tools.$(OBJEXT) main.$(OBJEXT) \
+@CUDA_TRUE@@QMDD_FALSE@am_epig_OBJECTS = cuda_tools.$(OBJEXT) \
+@CUDA_TRUE@@QMDD_FALSE@	tools.$(OBJEXT) main.$(OBJEXT) \
 @CUDA_TRUE@@QMDD_FALSE@	cstGA.$(OBJEXT) Qe.$(OBJEXT)
-@QMDD_TRUE@am_epig_OBJECTS = $(am__objects_1) standard_multi.$(OBJEXT) \
-@QMDD_TRUE@	tools.$(OBJEXT) main.$(OBJEXT) cstGA.$(OBJEXT) \
-@QMDD_TRUE@	Qe.$(OBJEXT) qmddfunc.$(OBJEXT)
+@QMDD_TRUE@am_epig_OBJECTS = standard_multi.$(OBJEXT) tools.$(OBJEXT) \
+@QMDD_TRUE@	main.$(OBJEXT) cstGA.$(OBJEXT) Qe.$(OBJEXT) \
+@QMDD_TRUE@	qmddfunc.$(OBJEXT)
 epig_OBJECTS = $(am_epig_OBJECTS)
 epig_LDADD = $(LDADD)
 AM_V_P = $(am__v_P_@AM_V@)
@@ -287,11 +279,20 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 SUFFIXES = .cu .cc .o .obj
-@ELEM_TRUE@@MSRMNT_FALSE@@SQNC_FALSE@epig_SPECS = cuda_stdnrt.cu
-@MSRMNT_FALSE@@SQNC_TRUE@epig_SPECS = cuda_sqncs.cu
-@MSRMNT_TRUE@epig_SPECS = cuda_msrmnt.cu
 @CUDA_FALSE@@GSLBLAS_TRUE@@QMDD_FALSE@epig_SOURCES = $(epig_SPECS) standard_multi.cc tools.cc main.cc cstGA.cc Qe.cc
-@CUDA_TRUE@@QMDD_FALSE@epig_SOURCES = $(epig_SPECS) ccuda_multi.cu cuda_tools.cc main.cc cstGA.cc Qe.cc
+@CUDA_TRUE@@QMDD_FALSE@epig_SOURCES = $(epig_SPECS) cuda_tools.cu tools.cc main.cc cstGA.cc Qe.cc
+
+#if MSRMNT
+#epig_SPECS=cuda_msrmnt.cu
+#else
+#if SQNC
+#epig_SPECS=cuda_sqncs.cu
+#else
+#if ELEM
+#epig_SPECS=""
+#endif
+#endif
+#endif
 @QMDD_TRUE@epig_SOURCES = $(epig_SPECS) standard_multi.cc tools.cc main.cc cstGA.cc Qe.cc qmddfunc.cc
 all: all-am
 
@@ -381,7 +382,6 @@ distclean-compile:
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Qe.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cstGA.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cuda_tools.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/main.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/qmddfunc.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/standard_multi.Po@am__quote@
