@@ -45,13 +45,13 @@
 //Max-Fitness Threshold for Replication (0 - no, 1< >0):   
 #define ga_threshold 0.05
 //The number of wires the final circuit has:               
-#define ga_resultnum 5
+#define ga_resultnum 4
 //Valuedness of designed logic:                            
 #define ga_valuedness 2
 //Error adjustment for Entanglement design:                         
 #define ga_error_adjust 0.6
 //Design of Sequential Logic/ Sequence Detector:           
-#define ga_seq_detect_enabled 1
+#define ga_seq_detect_enabled 0
 //Measurement used:                                        
 #define ga_measurement 0
 //Measurement used:                                        

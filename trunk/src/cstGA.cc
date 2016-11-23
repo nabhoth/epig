@@ -42,6 +42,7 @@ void GA::evaluatePopulation() {
 		totfit += population[t]->fitness;
 		toterr += population[t]->Error;
 		totcost += population[t]->Cost;
+
 		if (population[t]->fitness > population[c]->fitness) {
 			c = t;
 		}
@@ -173,7 +174,6 @@ void* GA::doMatrixFitness(Individual *ind, bool display) {
 			}
 		}
 	}
-
 	//normalizing error
 	if (errorcounter != 0)
 		indi->Error = error / errorcounter;
@@ -579,7 +579,7 @@ void GA::initializePop(int level, string filename, string out_prefix) {
 		}
 		//dump to the output file the intialized individual
 //	cout << "Generating intial population of circuits3" << endl;
-#ifdef __STDR__
+//#ifdef __STDR__
 
 	if (ga_poly_search > 0){
 		doMatrixFitnessPoly(population[i], false);
@@ -589,12 +589,13 @@ void GA::initializePop(int level, string filename, string out_prefix) {
 		else 
 			doMeasureFitness(population[i], false);
 	} else if (ga_measurement == 0){
+//		cout<<"doing fitness for "<<i<<" th individual"<<endl;
 		doMatrixFitness(population[i], false);
 	}
 
 
 
-#endif
+//#endif
 #ifdef __QMDD__
 //	cout << "Generating intial population of circuits5" << endl;
 		decodeIndvStrToRevLibStr(population[i]);
@@ -634,6 +635,7 @@ void GA::initializePop(int level, string filename, string out_prefix) {
 		else 
 			doMeasureFitness(bestIndv, false);
 	} else if (ga_measurement == 0){
+//		cout<<"doing fitness for best individual"<<endl;
 		doMatrixFitness(bestIndv, false);
 	}
 
@@ -1635,12 +1637,12 @@ char GA::loadGateArray(int valuedness, char chcounter){
 	//char chcounter = charcounter;
 	// get first gate
 	for (int a = 0; a < numofgates; a++) {
-	cout << " Writing Gates " << numofgates<<" "<< gateArray<<endl;
+//	cout << " Writing Gates " << numofgates<<" "<< gateArray<<endl;
 		gateArray[a] = new qGate;
-	cout << " Writing Output " << numofgates<<endl;
+//	cout << " Writing Output " << numofgates<<endl;
 		gateArray[a]->valuedness = valuedness;
 		gateArray[a]->representation = char(chcounter++);
-	cout << " Writing Output " << endl;
+//	cout << " Writing Output " << endl;
 		in_stream >> gateArray[a]->numIO;
 		in_stream >> gateArray[a]->Cost;
 		initGate(gateArray[a], gateArray[a]->numIO,  gateArray[a]->valuedness, gateArray[a]->Cost);
@@ -1666,6 +1668,7 @@ char GA::loadGateArray(int valuedness, char chcounter){
 		// get the expected result matrix from the file
 //		in_stream >> ga_resultnum;
 		in_stream >> measured_desired_output_records;
+		cout<<measured_desired_output_records<<endl;
 		if (measured_desired_output_records == 0) {
 			columns = (int(pow((float) valuedness, (float) ga_resultnum)));
 			for (int m = 0; m < columns; m++) {
